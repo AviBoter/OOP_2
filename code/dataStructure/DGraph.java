@@ -5,17 +5,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DGraph implements graph{
-	HashMap<Integer,NodeData> Map = new HashMap<>();
+	HashMap<Integer,NodeData> NMap = new HashMap<>();
+	HashMap<Integer,Edata> EMap = new HashMap<>();
 
 	@Override
 	public node_data getNode(int key) {
-		// TODO Auto-generated method stub
-		return null;
+		return NMap.get(key);
 	}
 
 	@Override
 	public edge_data getEdge(int src, int dest) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
