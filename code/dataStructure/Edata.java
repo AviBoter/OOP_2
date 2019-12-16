@@ -1,9 +1,15 @@
 package dataStructure;
 
 public class Edata implements edge_data {
-	int Src,Dest,tag;
-	String info;
-	 
+	private int Src,Dest,tag;
+	double Weight;
+	private String info;
+
+	public Edata(int src,int dest, double weight){
+		this.Dest = dest;
+		this.Src = src;
+		this.Weight = weight;
+	}
 	@Override
 	public int getSrc() {
 		return this.Src;
@@ -17,13 +23,13 @@ public class Edata implements edge_data {
 	@Override
 	public double getWeight() {
 		// TODO Auto-generated method stub
-		return this.getWeight();
+		return this.Weight;
 	}
 
 	@Override
 	public String getInfo() {
 		// TODO Auto-generated method stub
-		return this.getInfo();
+		return this.info;
 	}
 
 	@Override
@@ -35,7 +41,7 @@ public class Edata implements edge_data {
 	@Override
 	public int getTag() {
 		// TODO Auto-generated method stub
-		return this.getTag();
+		return tag;
 		}
 
 	@Override
