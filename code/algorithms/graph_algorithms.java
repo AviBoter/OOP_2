@@ -1,6 +1,6 @@
 package algorithms;
 /**
- * This interface represents the "regular" Graph Theory algorithms including:
+ * This interface represents the git remote add origin including:
  * 0. clone();
  * 1. init(String file_name);
  * 2. save(String file_name);
