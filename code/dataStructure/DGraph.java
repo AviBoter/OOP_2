@@ -122,35 +122,34 @@ public class DGraph implements graph{
 	    boolean FLAG = true;
         boolean notfound = true;
         int current = 0;
-        for (int i=0 ; i<NodeData.getIDMAX()&& notfound;i++){
+        for (int i=0 ; i<=NodeData.getIDMAX()&& notfound;i++){
             notfound = !NMap.containsKey(i);
             current = i;
         }
         Queue<Integer> myQue = new LinkedList<>();
-            while (FLAG||myQue.isEmpty()){
+            while (FLAG){
                 FLAG = false;
 	        if (NMap.containsKey(current)){
-	            if (NMap.get(current).get_tagFolow()==-1){
 	               NodeData temp = NMap.get(current);
                     List<edge_data> list =new LinkedList<>(temp.getE());
                     for (edge_data i : list) {
-                        if (NMap.get(i.getDest()).get_tagFolow()==-1){
+                        if (NMap.get(i.getDest()).get_tagFolow()!=1) {
                             NMap.get(i.getDest()).set_tagFolow(1);
                             myQue.add(i.getDest());
                         }
                     }
-
-	            }
-
 	        }
-	        if (!myQue.isEmpty()) {
-                current = myQue.poll();
-            }
-
+                if (!myQue.isEmpty()) {
+                    current = myQue.poll();
+                    FLAG = true;
+                }
         }
-        for (int i=0 ; i<NodeData.getIDMAX();i++){
+        for (int i=0 ; i<=NodeData.getIDMAX();i++){
             if (NMap.containsKey(i)){
-                if(NMap.get(i).get_tagFolow()==-1) return false;
+                if(NMap.get(i).get_tagFolow()==-1){
+                    System.out.println(i);
+                    return false;
+                }
             }
         }
         return true;
