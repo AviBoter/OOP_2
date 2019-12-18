@@ -5,6 +5,11 @@ public class Edata implements edge_data {
 	double Weight;
 	private String info;
 
+	public Edata(edge_data e){
+		this.Dest = e.getDest();
+		this.Src = e.getSrc();
+		this.Weight = e.getWeight();
+	}
 	public Edata(int src,int dest, double weight){
 		this.Dest = dest;
 		this.Src = src;

@@ -1,7 +1,10 @@
 package algorithms;
 
+import java.util.LinkedList;
 import java.util.List;
 
+import dataStructure.DGraph;
+import dataStructure.NodeData;
 import dataStructure.graph;
 import dataStructure.node_data;
 /**
@@ -11,10 +14,11 @@ import dataStructure.node_data;
  *
  */
 public class Graph_Algo implements graph_algorithms{
+	DGraph _G = new DGraph();
 
 	@Override
 	public void init(graph g) {
-		// TODO Auto-generated method stub
+		_G =  new DGraph(g);
 		
 	}
 
@@ -32,8 +36,7 @@ public class Graph_Algo implements graph_algorithms{
 
 	@Override
 	public boolean isConnected() {
-		// TODO Auto-generated method stub
-		return false;
+		return _G.isConnected();
 	}
 
 	@Override

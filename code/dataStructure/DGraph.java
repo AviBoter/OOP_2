@@ -1,14 +1,24 @@
 package dataStructure;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class DGraph implements graph{
-	HashMap<Integer,NodeData> NMap = new HashMap<>();
+	HashMap<Integer,NodeData> NMap = new LinkedHashMap<>();
 	private int _EdgeZise = 0;
 	private int _MC=0;
+
+	public DGraph(){
+    }
+	public DGraph(graph g){
+        List<node_data> list =new LinkedList<>(g.getV());
+        for (node_data i : list) {
+            NodeData nodeDataTemp = new NodeData(i);
+            nodeDataTemp.setE(g.getE(nodeDataTemp.getKey()));
+            NMap.put(nodeDataTemp.getKey(), nodeDataTemp);
+
+        }
+
+    }
 
 	@Override
 	public node_data getNode(int key) {
@@ -45,7 +55,8 @@ public class DGraph implements graph{
 
 	@Override
 	public Collection<node_data> getV() {
-		return (Collection<node_data>) NMap;
+		List<node_data> list = new ArrayList<node_data>(NMap.values());
+		return list;
 
 	}
 
@@ -101,5 +112,53 @@ public class DGraph implements graph{
 	public int getMC() {
 		return _MC;
 	}
+
+    public boolean isConnected() {
+        for (int i=0 ; i<NodeData.getIDMAX();i++){
+            if (NMap.containsKey(i)){
+                NMap.get(i).set_tagFolow(-1);
+            }
+        }
+	    boolean FLAG = true;
+        boolean notfound = true;
+        int current = 0;
+        for (int i=0 ; i<NodeData.getIDMAX()&& notfound;i++){
+            notfound = !NMap.containsKey(i);
+            current = i;
+        }
+        Queue<Integer> myQue = new LinkedList<>();
+            while (FLAG||myQue.isEmpty()){
+                FLAG = false;
+	        if (NMap.containsKey(current)){
+	            if (NMap.get(current).get_tagFolow()==-1){
+	               NodeData temp = NMap.get(current);
+                    List<edge_data> list =new LinkedList<>(temp.getE());
+                    for (edge_data i : list) {
+                        if (NMap.get(i.getDest()).get_tagFolow()==-1){
+                            NMap.get(i.getDest()).set_tagFolow(1);
+                            myQue.add(i.getDest());
+                        }
+                    }
+
+	            }
+
+	        }
+	        if (!myQue.isEmpty()) {
+                current = myQue.poll();
+            }
+
+        }
+        for (int i=0 ; i<NodeData.getIDMAX();i++){
+            if (NMap.containsKey(i)){
+                if(NMap.get(i).get_tagFolow()==-1) return false;
+            }
+        }
+        return true;
+
+
+	}
+
+
+
 
 }

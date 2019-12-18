@@ -2,8 +2,7 @@ package dataStructure;
 
 import utils.Point3D;
 
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 
 public class NodeData implements node_data{
     private static int _ID=0;
@@ -12,16 +11,22 @@ public class NodeData implements node_data{
     private double _weight;
     private String _info = "";
     private int _tag;
-    private HashMap<Integer,Edata> EMap = new HashMap<>();
+    private int _tagFolow;
+    private HashMap<Integer,Edata> EMap = new LinkedHashMap<>();
 
 
-    public NodeData(){
+
+    public NodeData(Point3D location,double weight){
         _myID = _ID;
         _ID++;
+        _location = location;
+        _weight = weight;
 
     }
     public NodeData(node_data n){
         _myID = n.getKey();
+        if (_ID<n.getKey())
+            _ID = n.getKey()+1;
         _location = n.getLocation();
         _weight = n.getWeight();
         _info = n.getInfo();
@@ -82,11 +87,31 @@ public class NodeData implements node_data{
         EMap.put(des,edata);
     }
     public Collection<edge_data> getE() {
-        return (Collection<edge_data>) EMap;
+        List<edge_data> list = new ArrayList<>(EMap.values());
+        return list;
+    }
+
+    public void setE(Collection<edge_data> E) {
+        List<edge_data> list =new LinkedList<>(E);
+        for (edge_data i : list) {
+            Edata edata = new Edata(i);
+            EMap.put(edata.getDest(),edata);
+        }
     }
     public Edata removeEdge(int des){
         if (EMap.containsKey(des))
             return EMap.remove(des);
         return null;
+    }
+    public static int getIDMAX(){
+        return _ID;
+    }
+
+    public void set_tagFolow(int _tagFolow) {
+        this._tagFolow = _tagFolow;
+    }
+
+    public int get_tagFolow() {
+        return _tagFolow;
     }
 }
