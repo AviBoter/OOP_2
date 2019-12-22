@@ -11,10 +11,7 @@ public class NodeData implements node_data{
     private double _weight;
     private String _info = "";
     private int _tag;
-    private int _tagFolow;
-
-
-
+    private HashMap<Integer,Edata> EMap = new LinkedHashMap<>();
     public NodeData(Point3D location,double weight){
         _myID = _ID;
         _ID++;
@@ -102,17 +99,5 @@ public class NodeData implements node_data{
             return EMap.remove(des);
         return null;
     }
-    public static int getIDMAX(){
-        return _ID;
-    }
 
-    public void set_tagFolow(int _tagFolow) {
-        this._tagFolow = _tagFolow;
-    }
-
-    private HashMap<Integer,Edata> EMap = new LinkedHashMap<>();
-
-    public int get_tagFolow() {
-        return _tagFolow;
-    }
 }

@@ -30,6 +30,7 @@ public class Graph_GUI {
 
         }
     }
+
     Graph_Algo graphAlgo = new Graph_Algo();
     DGraph dGraph = new DGraph();
 
@@ -70,18 +71,22 @@ public class Graph_GUI {
                 double y0 = n.getLocation().y();
                 double y1 = dGraph.getNode(edge.getDest()).getLocation().y();
                 double x1 = dGraph.getNode(edge.getDest()).getLocation().x();
+
                 StdDraw.line(x0, y0, x1, y1);
-                double deltaX = x1 - x0;
-                double deltaY = y1 - y0;
-                double slope = deltaY / deltaX;
-                double f = y0 - x0 * slope;
-                StdDraw.setPenRadius(0.02);
+                StdDraw.setPenRadius(0.03);
                 StdDraw.setPenColor(StdDraw.RED);
-                if (y0<=y1) {
-                    StdDraw.point((x1 + 1), (x1 + 1) * slope + f);
-                }else {
-                    StdDraw.point((x1 -2), (x1 -2) * slope + f);
-                }
+                StdDraw.point(0.1*x0+0.9*x1,0.1*y0+0.9*y1);
+//                double deltaX = x1 - x0;
+//                double deltaY = y1 - y0;
+//                double slope = deltaY / deltaX;
+//                double f = y0 - x0 * slope;
+//                StdDraw.setPenRadius(0.02);
+//                StdDraw.setPenColor(StdDraw.RED);
+//                if (y0<=y1) {
+//                    StdDraw.point((x1 + 1), (x1 + 1) * slope + f);
+//                }else {
+//                    StdDraw.point((x1 -2), (x1 -2) * slope + f);
+//                }
                 StdDraw.setPenRadius(0.01);
                 StdDraw.setPenColor(StdDraw.BLACK);
             }
@@ -103,43 +108,55 @@ public class Graph_GUI {
 
     public static void main(String[] args){
         Graph_GUI test = new Graph_GUI();
-        Point3D p1 = new Point3D(10,10);
-        Point3D p2 = new Point3D(25,13);
-        Point3D p3 = new Point3D(30,22);
-        Point3D p4 = new Point3D(35,40);
-        Point3D p5 = new Point3D(50,80);
+        Point3D p1 = new Point3D(20,20);
+        Point3D p2 = new Point3D(20,40);
+        Point3D p3 = new Point3D(40,40);
+        Point3D p4 = new Point3D(40,20);
+        Point3D p5 = new Point3D(30,30);
         test.addPoint(p1,0);
         test.addPoint(p2,0);
         test.addPoint(p3,0);
         test.addPoint(p4,0);
         test.addPoint(p5,0);
-
-        Point3D p6 = new Point3D(90,10);
-        Point3D p7 = new Point3D(85,14);
-        Point3D p8 = new Point3D(76,35);
-        Point3D p9 = new Point3D(64,45);
-       // Point3D p10 = new Point3D(60,80);
-        test.addPoint(p6,0);
-        test.addPoint(p7,0);
-        test.addPoint(p8,0);
-        test.addPoint(p9,0);
         test.addE(0,1,0);
+        test.addE(0,3,0);
+        test.addE(0,4,0);
         test.addE(1,2,0);
-        test.addE(2,3,0);
+        test.addE(1,4,0);
         test.addE(2,4,0);
-        test.addE(2,5,0);
-        test.addE(2,6,0);
-        test.addE(2,7,0);
-        test.addE(2,8,0);
-        //
+        test.addE(2,3,0);
         test.addE(3,4,0);
-        test.addE(4,3,0);
+
+//        test.addPoint(p3,0);
+//        test.addPoint(p4,0);
+//        test.addPoint(p5,0);
+//
+//        Point3D p6 = new Point3D(90,10);
+//        Point3D p7 = new Point3D(85,14);
+//        Point3D p8 = new Point3D(76,35);
+//        Point3D p9 = new Point3D(64,45);
+       // Point3D p10 = new Point3D(60,80);
+//        test.addPoint(p6,0);
+//        test.addPoint(p7,0);
+//        test.addPoint(p8,0);
+//        test.addPoint(p9,0);
+//        test.addE(0,1,0);
+//        test.addE(1,2,0);
+//        test.addE(2,3,0);
+//        test.addE(2,4,0);
+//        test.addE(2,5,0);
+//        test.addE(2,6,0);
+//        test.addE(2,7,0);
+//        test.addE(2,8,0);
         //
-        test.addE(5,6,0);
-        test.addE(6,7,0);
-        test.addE(7,8,0);
-        test.addE(8,2,0);
-        test.addE(8,0,0);
+//        test.addE(3,4,0);
+//        test.addE(4,3,0);
+        //
+//        test.addE(5,6,0);
+//        test.addE(6,7,0);
+//        test.addE(7,8,0);
+//        test.addE(8,2,0);
+//        test.addE(8,0,0);
 //        test.addE(3,8,0);
 //        test.addE(4,8,0);
 

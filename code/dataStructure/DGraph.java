@@ -16,7 +16,6 @@ public class DGraph implements graph{
             NodeData nodeDataTemp = new NodeData(i);
             nodeDataTemp.setE(g.getE(nodeDataTemp.getKey()));
             NMap.put(nodeDataTemp.getKey(), nodeDataTemp);
-
         }
 
     }
@@ -58,12 +57,6 @@ public class DGraph implements graph{
 	public Collection<node_data> getV() {
 		List<node_data> list = new ArrayList<node_data>(NMap.values());
 		return list;
-
-	}
-	public Collection<NodeData> getVlike() {
-		List<NodeData> list = new ArrayList<NodeData>(NMap.values());
-		return list;
-
 	}
 
 	@Override
