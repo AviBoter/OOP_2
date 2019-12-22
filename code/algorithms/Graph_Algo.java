@@ -1,12 +1,9 @@
 package algorithms;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
-import dataStructure.DGraph;
-import dataStructure.NodeData;
-import dataStructure.graph;
-import dataStructure.node_data;
+import dataStructure.*;
+
 /**
  * This empty class represents the set of graph-theory algorithms
  * which should be implemented as part of Ex2 - Do edit this class.
@@ -36,20 +33,65 @@ public class Graph_Algo implements graph_algorithms{
 
 	@Override
 	public boolean isConnected() {
-		return _G.isConnected();
+		Collection<node_data> temp = _G.getV();
+		Iterator<node_data> nodeIter =temp.iterator();
+		while (nodeIter.hasNext()){
+			nodeIter.next().setTag(-1);
+		}
+		boolean FLAG = true;
+		Queue<node_data> myQue = new LinkedList<>();
+		Queue<node_data> finish = new LinkedList<>();
+		nodeIter =temp.iterator();
+		node_data current = nodeIter.next();
+		boolean second = false;
+		int k=0;
+		for (;FLAG;k++) {
+			while (FLAG) {
+				FLAG = false;
+					List<edge_data> list = new LinkedList<>(_G.getE(current.getKey()));
+					if (list.isEmpty()) return false;
+					for (edge_data i : list) {
+						if (_G.getNode(i.getDest()).getTag() !=k) {
+							_G.getNode(i.getDest()).setTag(k);
+							myQue.add(_G.getNode(i.getDest()));
+						}
+						else if (!second){
+							finish.add(current);
+						}
+					}
+				if (!myQue.isEmpty()) {
+					current = myQue.poll();
+					FLAG = true;
+				}
+			}
+			if (!finish.isEmpty()) {
+				current = finish.poll();
+				second = true;
+				FLAG = true;
+			}
+			nodeIter = temp.iterator();
+			while (nodeIter.hasNext()){
+				node_data tempNode = nodeIter.next();
+				if (tempNode.getTag()!=k) {
+					return false;
+				}
+			}
+
+		}
+		return true;
 	}
 
 	@Override
 	public double shortestPathDist(int src, int dest) {
-		// TODO Auto-generated method stub
-		return 0;
+		return _G.shortestPathDist(src,dest);
 	}
 
 	@Override
 	public List<node_data> shortestPath(int src, int dest) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
+
 
 	@Override
 	public List<node_data> TSP(List<Integer> targets) {

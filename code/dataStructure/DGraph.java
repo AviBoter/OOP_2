@@ -4,6 +4,7 @@ import java.util.*;
 
 public class DGraph implements graph{
 	HashMap<Integer,NodeData> NMap = new LinkedHashMap<>();
+	HashMap<Integer,HashMap<Integer,edge_data>> EMap = new LinkedHashMap<>();
 	private int _EdgeZise = 0;
 	private int _MC=0;
 
@@ -56,6 +57,11 @@ public class DGraph implements graph{
 	@Override
 	public Collection<node_data> getV() {
 		List<node_data> list = new ArrayList<node_data>(NMap.values());
+		return list;
+
+	}
+	public Collection<NodeData> getVlike() {
+		List<NodeData> list = new ArrayList<NodeData>(NMap.values());
 		return list;
 
 	}
@@ -113,51 +119,9 @@ public class DGraph implements graph{
 		return _MC;
 	}
 
-    public boolean isConnected() {
-        for (int i=0 ; i<NodeData.getIDMAX();i++){
-            if (NMap.containsKey(i)){
-                NMap.get(i).set_tagFolow(-1);
-            }
-        }
-	    boolean FLAG = true;
-        boolean notfound = true;
-        int current = 0;
-        for (int i=0 ; i<=NodeData.getIDMAX()&& notfound;i++){
-            notfound = !NMap.containsKey(i);
-            current = i;
-        }
-        Queue<Integer> myQue = new LinkedList<>();
-            while (FLAG){
-                FLAG = false;
-	        if (NMap.containsKey(current)){
-	               NodeData temp = NMap.get(current);
-                    List<edge_data> list =new LinkedList<>(temp.getE());
-                    for (edge_data i : list) {
-                        if (NMap.get(i.getDest()).get_tagFolow()!=1) {
-                            NMap.get(i.getDest()).set_tagFolow(1);
-                            myQue.add(i.getDest());
-                        }
-                    }
-	        }
-                if (!myQue.isEmpty()) {
-                    current = myQue.poll();
-                    FLAG = true;
-                }
-        }
-        for (int i=0 ; i<=NodeData.getIDMAX();i++){
-            if (NMap.containsKey(i)){
-                if(NMap.get(i).get_tagFolow()==-1){
-                    System.out.println(i);
-                    return false;
-                }
-            }
-        }
-        return true;
 
 
+	public double shortestPathDist(int src, int dest) {
+		return 0;
 	}
-
-
-
-
 }

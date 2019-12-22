@@ -12,7 +12,6 @@ public class NodeData implements node_data{
     private String _info = "";
     private int _tag;
     private int _tagFolow;
-    private HashMap<Integer,Edata> EMap = new LinkedHashMap<>();
 
 
 
@@ -110,6 +109,8 @@ public class NodeData implements node_data{
     public void set_tagFolow(int _tagFolow) {
         this._tagFolow = _tagFolow;
     }
+
+    private HashMap<Integer,Edata> EMap = new LinkedHashMap<>();
 
     public int get_tagFolow() {
         return _tagFolow;
