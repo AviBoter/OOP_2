@@ -31,8 +31,8 @@ public class Graph_GUI {
         }
     }
 
-    Graph_Algo graphAlgo = new Graph_Algo();
-    DGraph dGraph = new DGraph();
+    private Graph_Algo graphAlgo = new Graph_Algo();
+    private DGraph dGraph = new DGraph();
 
     public Graph_GUI(){
 
@@ -49,8 +49,8 @@ public class Graph_GUI {
     }
     public void draw(int width,int height){
         StdDraw.setCanvasSize(width,height);
-        StdDraw.setXscale(0,100);
-        StdDraw.setYscale(0,100);
+        StdDraw.setXscale(NodeData.getMinX(),NodeData.getMaxX());
+        StdDraw.setYscale(NodeData.getMinY(),NodeData.getMaxY());
         update();
     }
     public void update() {
@@ -92,6 +92,10 @@ public class Graph_GUI {
             }
         }
     }
+    public void delete(int key) {
+        dGraph.removeNode(key);
+        update();
+    }
     public static void newLocation(Graph_GUI graph_gui){
         for (int i = 0; i<graph_gui.dGraph.nodeSize();i++){
             double x = graph_gui.dGraph.getNode(i).getLocation().x()+1;
@@ -126,6 +130,10 @@ public class Graph_GUI {
         test.addE(2,4,0);
         test.addE(2,3,0);
         test.addE(3,4,0);
+
+        test.delete(0);
+        //System.out.println(test.isConected());
+        test.isConected();
 
 //        test.addPoint(p3,0);
 //        test.addPoint(p4,0);
@@ -187,11 +195,13 @@ public class Graph_GUI {
 //            test.addE(x,y,0);
 //        }
         test.draw(800,600);
-        System.out.println(test.isConected());
+        //System.out.println(test.isConected());
         Timer timer = new Timer();
         timer.schedule(new Active(test), 0, 1);
 
 
     }
+
+
 
 }

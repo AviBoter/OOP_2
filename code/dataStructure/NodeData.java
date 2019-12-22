@@ -12,7 +12,12 @@ public class NodeData implements node_data{
     private String _info = "";
     private int _tag;
     private HashMap<Integer,Edata> EMap = new LinkedHashMap<>();
+    private static double maxY=0, maxX=0 , minX=0, minY=0;
     public NodeData(Point3D location,double weight){
+        maxX = Math.max(location.x(),maxX)+20;
+        maxY = Math.max(location.y(),maxY)+20;
+        minX = Math.min(location.x(),minX)-20;
+        minY = Math.min(location.y(),minY)-20;
         _myID = _ID;
         _ID++;
         _location = location;
@@ -100,4 +105,19 @@ public class NodeData implements node_data{
         return null;
     }
 
+    public static double getMaxX() {
+        return maxX;
+    }
+
+    public static double getMinX() {
+        return minX;
+    }
+
+    public static double getMaxY() {
+        return maxY;
+    }
+
+    public static double getMinY() {
+        return minY;
+    }
 }

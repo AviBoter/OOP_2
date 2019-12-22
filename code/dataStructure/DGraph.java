@@ -58,6 +58,9 @@ public class DGraph implements graph{
 		List<node_data> list = new ArrayList<node_data>(NMap.values());
 		return list;
 	}
+	public Collection<NodeData> getVND() {
+		return NMap.values();
+	}
 
 	@Override
 	public Collection<edge_data> getE(int node_id) {
