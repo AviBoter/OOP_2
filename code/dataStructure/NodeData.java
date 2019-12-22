@@ -2,9 +2,10 @@ package dataStructure;
 
 import utils.Point3D;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class NodeData implements node_data{
+public class NodeData implements node_data, Serializable {
     private static int _ID=0;
     private int _myID;
     private Point3D _location = null;

@@ -3,20 +3,30 @@ package dataStructure;
 import java.util.*;
 
 public class DGraph implements graph{
-	HashMap<Integer,NodeData> NMap = new LinkedHashMap<>();
-	HashMap<Integer,HashMap<Integer,edge_data>> EMap = new LinkedHashMap<>();
+	private HashMap<Integer,node_data> NMap = new LinkedHashMap<>();
+	private HashMap<Integer,HashMap<Integer,edge_data>> EMap = new LinkedHashMap<>();
 	private int _EdgeZise = 0;
 	private int _MC=0;
 
 	public DGraph(){
     }
 	public DGraph(graph g){
-        List<node_data> list =new LinkedList<>(g.getV());
-        for (node_data i : list) {
-            NodeData nodeDataTemp = new NodeData(i);
-            nodeDataTemp.setE(g.getE(nodeDataTemp.getKey()));
-            NMap.put(nodeDataTemp.getKey(), nodeDataTemp);
-        }
+        Collection<node_data> tempV = g.getV();
+		for (dataStructure.node_data node_data : tempV) {
+			NodeData nodeData = new NodeData(node_data);
+			NMap.put(nodeData.getKey(), nodeData);
+			Collection<edge_data> tempE = g.getE(nodeData.getKey());
+			for (dataStructure.edge_data edge_data : tempE) {
+				Edata edata = new Edata(edge_data);
+				if (!EMap.containsKey(edata.getSrc())) {
+					HashMap<Integer, edge_data> tempHASH = new LinkedHashMap<>();
+					tempHASH.put(edata.getDest(), edata);
+					EMap.put(edata.getSrc(), tempHASH);
+				} else {
+					EMap.get(edata.getSrc()).put(edata.getDest(), edata);
+				}
+			}
+		}
 
     }
 
@@ -29,8 +39,9 @@ public class DGraph implements graph{
 
 	@Override
 	public edge_data getEdge(int src, int dest) {
-		if (NMap.containsKey(src))
-			return NMap.get(src).getEdata(dest);
+		if (EMap.containsKey(src))
+			if (EMap.get(src).containsKey(dest))
+				return EMap.get(src).get(dest);
 		return null;
 	}
 
@@ -38,6 +49,8 @@ public class DGraph implements graph{
 	public void addNode(node_data n) {
 		if (!NMap.containsKey(n.getKey())) {
 			NMap.put(n.getKey(), new NodeData(n));
+			HashMap<Integer,edge_data> temp = new LinkedHashMap<>();
+			EMap.put(n.getKey(),temp);
 			_MC++;
 		}
 	}
@@ -46,8 +59,14 @@ public class DGraph implements graph{
 	public void connect(int src, int dest, double w) {
 		if (!(NMap.containsKey(dest)&&NMap.containsKey(src)))
 			throw new RuntimeException("not Exist");
-		Edata edata = new Edata(src,dest,w);
-		NMap.get(src).put(dest,edata);
+		edge_data edata = new Edata(src,dest,w);
+		if (EMap.containsKey(src)&&EMap.get(src).containsKey(dest)){
+			EMap.get(src).put(dest,edata);
+		}else {
+			HashMap<Integer,edge_data> temp = new LinkedHashMap<>();
+			temp.put(dest,edata);
+			EMap.put(src,temp);
+		}
 		_EdgeZise++;
 		_MC++;
 		
@@ -55,18 +74,17 @@ public class DGraph implements graph{
 
 	@Override
 	public Collection<node_data> getV() {
-		List<node_data> list = new ArrayList<node_data>(NMap.values());
+		List<node_data> list = new ArrayList<>(NMap.values());
 		return list;
-	}
-	public Collection<NodeData> getVND() {
-		return NMap.values();
 	}
 
 	@Override
 	public Collection<edge_data> getE(int node_id) {
 		if (!NMap.containsKey(node_id))
 			return null;
-		return NMap.get(node_id).getE();
+		if (!EMap.containsKey(node_id))
+			return null;
+		return EMap.get(node_id).values();
 	}
 
 	@Override
@@ -75,10 +93,7 @@ public class DGraph implements graph{
 			_MC++;
 			for (int i =0; i<NMap.size();i++){
 				if (NMap.containsKey(i)){
-					Edata temp = NMap.get(i).removeEdge(key);
-					if (temp!=null){
-						_EdgeZise--;
-					}
+					removeEdge(i,key);
 				}
 			}
 			return NMap.remove(key);
@@ -89,15 +104,19 @@ public class DGraph implements graph{
 
 	@Override
 	public edge_data removeEdge(int src, int dest) {
-		if (!(NMap.containsKey(dest)&&NMap.containsKey(src))){
+		if (!(NMap.containsKey(src)&&NMap.containsKey(dest))){
 			return null;
 		}
 		_MC++;
-		Edata temp = NMap.get(src).removeEdge(dest);
-		if (temp!=null){
-			_EdgeZise--;
+		if (EMap.containsKey(src)) {
+			edge_data temp = EMap.get(src).remove(dest);
+
+			if (temp != null) {
+				_EdgeZise--;
+			}
+			return temp;
 		}
-		return temp;
+		return null;
 	}
 
 	@Override

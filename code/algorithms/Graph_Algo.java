@@ -1,5 +1,6 @@
 package algorithms;
 
+import java.io.IOException;
 import java.util.*;
 
 import dataStructure.*;
@@ -15,20 +16,17 @@ public class Graph_Algo implements graph_algorithms{
 
 	@Override
 	public void init(graph g) {
-		_G =  new DGraph(g);
-		
+		_G = new DGraph(g);
 	}
 
 	@Override
 	public void init(String file_name) {
 		// TODO Auto-generated method stub
-		
 	}
-
 	@Override
 	public void save(String file_name) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -41,13 +39,20 @@ public class Graph_Algo implements graph_algorithms{
 		boolean FLAG = true;
 		Queue<node_data> myQue = new LinkedList<>();
 		Queue<node_data> finish = new LinkedList<>();
-		nodeIter =temp.iterator();
-		node_data current = nodeIter.next();
+		node_data current;
+		nodeIter = _G.getV().iterator();
+		if(nodeIter.hasNext()) {
+			current = nodeIter.next();
+		}else {
+			System.out.println("BUG");
+			return false;
+		}
 		boolean second = false;
 		int k=0;
 		for (;FLAG;k++) {
 			while (FLAG) {
 				FLAG = false;
+				if (_G.getE(current.getKey())==null) return false;
 					List<edge_data> list = new LinkedList<>(_G.getE(current.getKey()));
 					if (list.isEmpty()) return false;
 					for (edge_data i : list) {
@@ -76,7 +81,6 @@ public class Graph_Algo implements graph_algorithms{
 					return false;
 				}
 			}
-
 		}
 		return true;
 	}

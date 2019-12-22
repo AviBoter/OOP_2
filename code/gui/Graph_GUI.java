@@ -92,10 +92,12 @@ public class Graph_GUI {
             }
         }
     }
+
     public void delete(int key) {
         dGraph.removeNode(key);
         update();
     }
+
     public static void newLocation(Graph_GUI graph_gui){
         for (int i = 0; i<graph_gui.dGraph.nodeSize();i++){
             double x = graph_gui.dGraph.getNode(i).getLocation().x()+1;
@@ -105,6 +107,7 @@ public class Graph_GUI {
         }
         graph_gui.update();
     }
+
     public boolean isConected(){
         graphAlgo.init(dGraph);
         return graphAlgo.isConnected();
@@ -133,7 +136,8 @@ public class Graph_GUI {
 
         test.delete(0);
         //System.out.println(test.isConected());
-        test.isConected();
+        System.out.println(1);
+        System.out.println(test.isConected());
 
 //        test.addPoint(p3,0);
 //        test.addPoint(p4,0);
