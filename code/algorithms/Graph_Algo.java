@@ -106,16 +106,18 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 		HashMap<Integer, Double> myBoard = new LinkedHashMap<>();
 		Queue<Integer> myQueue = new LinkedList<>();
 		int current;
+		boolean desH = false;
 		myQueue.add(src);
 		myBoard.put(src,0.0);
 		while (!myQueue.isEmpty()) {
 			current = myQueue.poll();
 			if (current == dest) {
-				return myBoard.get(dest);
+				desH = true;
 			}
+			else desH = false;
 			ArrayList<edge_data> myEData = new ArrayList<>(_G.getE(current));
 			boolean flag = true;
-			while (flag) {
+			while (!desH&&flag) {
 				int minIndex = minInArray(myEData);
 				if (minIndex != -1) {
 					edge_data minE = myEData.remove(minIndex);
@@ -154,6 +156,29 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 
 	@Override
 	public List<node_data> shortestPath(int src, int dest) {
+//		HashMap<Integer, List<node_data>> myBoard = new LinkedHashMap<>();
+//		Queue<Integer> myQueue = new LinkedList<>();
+//		int current;
+//		myQueue.add(src);
+//		myBoard.put(src,0.0);
+//		while (!myQueue.isEmpty()) {
+//			current = myQueue.poll();
+//			if (current == dest) {
+//				return myBoard.get(dest);
+//			}
+//			ArrayList<edge_data> myEData = new ArrayList<>(_G.getE(current));
+//			boolean flag = true;
+//			while (flag) {
+//				int minIndex = minInArray(myEData);
+//				if (minIndex != -1) {
+//					edge_data minE = myEData.remove(minIndex);
+//					updateBoard(myBoard, minE);
+//					myQueue.add(minE.getDest());
+//				}
+//				else flag =false;
+//			}
+//		}
+//		return myBoard.get(dest);
 
 		return null;
 	}
