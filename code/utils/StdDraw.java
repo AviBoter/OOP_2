@@ -1667,8 +1667,9 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 				String des=JOptionPane.showInputDialog(f,"Enter des");
 				String wei=JOptionPane.showInputDialog(f,"Enter weight");
 				int sorce = Integer.parseInt(src);
-				int destenation = Integer.parseInt(src);
+				int destenation = Integer.parseInt(des);
 				double weight = Double.parseDouble(wei);
+            System.out.println(sorce+" "+destenation+" "+weight);
 			Ggui.addE(sorce,destenation,weight);
 			Ggui.update();
 

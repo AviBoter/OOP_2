@@ -182,7 +182,7 @@ public class Graph_GUI implements Serializable {
         test.delete(0);
 //        System.out.println(1);
         //System.out.println(test.isConected());
-        //Timer timer = new Timer();
+        Timer timer = new Timer();
         //test.save("fileTEST");
         //Graph_GUI test2 = new Graph_GUI();
         //test2.initGraph("fileTEST");
@@ -190,7 +190,7 @@ public class Graph_GUI implements Serializable {
         //test2.isConected();
         test.draw(1200,800,new Range(-100,100),new Range(-100,100));
 
-        //timer.schedule(new Active(test2), 1, 1);
+        timer.schedule(new Active(test), 1, 1);
        // test2.addE(3,4,0);
 
 
