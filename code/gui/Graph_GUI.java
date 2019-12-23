@@ -14,6 +14,9 @@ import java.util.List;
 
 public class Graph_GUI implements Serializable {
 
+
+
+
     static class Active extends TimerTask {
         Graph_GUI gui;
         boolean press = false;
@@ -115,6 +118,8 @@ public class Graph_GUI implements Serializable {
                     double x1 = dGraph.getNode(edge.getDest()).getLocation().x();
 
                     StdDraw.line(x0, y0, x1, y1);
+                    StdDraw.setPenColor(Color.cyan);
+                    StdDraw.text(0.5 * x0 + 0.5 * x1, 0.5 * y0 + 0.5 * y1,edge.getWeight()+"");
                     StdDraw.setPenRadius(0.03);
                     StdDraw.setPenColor(StdDraw.RED);
                     StdDraw.point(0.1 * x0 + 0.9 * x1, 0.1 * y0 + 0.9 * y1);
@@ -145,6 +150,14 @@ public class Graph_GUI implements Serializable {
         graphAlgo.init(dGraph);
         return graphAlgo.isConnected();
     }
+    public double shortestPathDist(int src, int dest) {
+        graphAlgo.init(dGraph);
+        return graphAlgo.shortestPathDist(src,dest);
+    }
+    public List<node_data> shortestPath(int src, int dest) {
+        graphAlgo.init(dGraph);
+        return graphAlgo.shortestPath(src,dest);
+    }
     public void save(String filename){
         graphAlgo.init(dGraph);
         graphAlgo.save(filename);
@@ -158,31 +171,32 @@ public class Graph_GUI implements Serializable {
 
     public static void main(String[] args){
         Graph_GUI test = new Graph_GUI();
-        Point3D p1 = new Point3D(20,20);
-        Point3D p2 = new Point3D(20,40);
-        Point3D p3 = new Point3D(40,40);
-        Point3D p4 = new Point3D(40,20);
-        Point3D p5 = new Point3D(30,30);
-        Point3D p6 = new Point3D(50,50);
-        test.addPoint(p1,0);
-        test.addPoint(p2,0);
-        test.addPoint(p3,0);
-        test.addPoint(p4,0);
-        test.addPoint(p5,0);
-        test.addPoint(p6,0);
-        test.addE(0,1,0);
-        test.addE(0,3,0);
-        test.addE(0,4,0);
-        test.addE(1,2,0);
-        test.addE(1,4,0);
-        test.addE(2,4,0);
-        test.addE(2,3,0);
-        test.addE(3,4,0);
+        Timer timer = new Timer();
 
-        test.delete(0);
+//        Point3D p1 = new Point3D(20,20);
+//        Point3D p2 = new Point3D(20,40);
+//        Point3D p3 = new Point3D(40,40);
+//        Point3D p4 = new Point3D(40,20);
+//        Point3D p5 = new Point3D(30,30);
+//        Point3D p6 = new Point3D(50,50);
+//        test.addPoint(p1,0);
+//        test.addPoint(p2,0);
+//        test.addPoint(p3,0);
+//        test.addPoint(p4,0);
+//        test.addPoint(p5,0);
+//        test.addPoint(p6,0);
+//        test.addE(0,1,0);
+//        test.addE(0,3,0);
+//        test.addE(0,4,0);
+//        test.addE(1,2,0);
+//        test.addE(1,4,0);
+//        test.addE(2,4,0);
+//        test.addE(2,3,0);
+//        test.addE(3,4,0);
+//
+//        test.delete(0);
 //        System.out.println(1);
         //System.out.println(test.isConected());
-        Timer timer = new Timer();
         //test.save("fileTEST");
         //Graph_GUI test2 = new Graph_GUI();
         //test2.initGraph("fileTEST");

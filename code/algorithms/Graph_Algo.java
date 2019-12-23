@@ -103,7 +103,53 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 
 	@Override
 	public double shortestPathDist(int src, int dest) {
-		return 0;
+		HashMap<Integer, Double> myBoard = new LinkedHashMap<>();
+		Queue<Integer> myQueue = new LinkedList<>();
+		int current;
+		myQueue.add(src);
+		myBoard.put(src,0.0);
+		while (!myQueue.isEmpty()) {
+			current = myQueue.poll();
+			if (current == dest) {
+				return myBoard.get(dest);
+			}
+			ArrayList<edge_data> myEData = new ArrayList<>(_G.getE(current));
+			boolean flag = true;
+			while (flag) {
+				int minIndex = minInArray(myEData);
+				if (minIndex != -1) {
+					edge_data minE = myEData.remove(minIndex);
+					updateBoard(myBoard, minE);
+					myQueue.add(minE.getDest());
+				}
+				else flag =false;
+			}
+		}
+		return myBoard.get(dest);
+	}
+	private void updateBoard(HashMap<Integer,Double> board,edge_data myedge){
+		int dest =  myedge.getDest();
+		int src = myedge.getSrc();
+		double amount = myedge.getWeight()+board.get(src);
+		if (!board.containsKey(dest)){
+			board.put(dest,amount);
+		}else {
+			if (board.get(dest)>amount){
+				board.put(dest,amount);
+			}
+		}
+	}
+	private int minInArray(List<edge_data> myList){
+		if (! myList.isEmpty()) {
+			int minWE = 0;
+			for (int i = 1; i < myList.size(); i++) {
+				if (myList.get(minWE).getWeight()>myList.get(i).getWeight()){
+					minWE = i;
+				}
+			}
+			return minWE;
+		}
+		return -1;
 	}
 
 	@Override

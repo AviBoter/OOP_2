@@ -27,6 +27,7 @@ package utils;
  *
  ******************************************************************************/
 
+import dataStructure.node_data;
 import gui.Graph_GUI;
 
 import java.awt.BasicStroke;
@@ -65,6 +66,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.TreeSet;
 import java.util.NoSuchElementException;
 import javax.imageio.ImageIO;
@@ -714,19 +716,42 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 	private static JMenuBar createMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 		JMenu menu = new JMenu("File");
-		JMenu menu1 = new JMenu("Add");
+		JMenu addM = new JMenu("Add");
+		JMenu gAlgoM = new JMenu("Algo");
 		menuBar.add(menu);
-		menuBar.add(menu1);
-		JMenuItem menuItem1 = new JMenuItem("save");
-		JMenuItem menuItem2 = new JMenuItem("add E");
-		menuItem1.addActionListener(std);
-		menuItem2.addActionListener(std);
-		menuItem1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
-				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-		menuItem2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
-				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-		menu.add(menuItem1);
-		menu1.add(menuItem2);
+		menuBar.add(addM);
+		menuBar.add(gAlgoM);
+
+		JMenuItem save = new JMenuItem("save");
+		JMenuItem addE = new JMenuItem("add E");
+		JMenuItem addP = new JMenuItem("add P");
+		JMenuItem isConnected = new JMenuItem("isConnected");
+		JMenuItem shortestPathDist = new JMenuItem("shortestPathDist");
+		JMenuItem shortestPath = new JMenuItem("shortestPath");
+        {
+            isConnected.addActionListener(std);
+            shortestPathDist.addActionListener(std);
+            shortestPath.addActionListener(std);
+            save.addActionListener(std);
+            addE.addActionListener(std);
+            addP.addActionListener(std);
+        }
+        {
+            isConnected.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+					Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            addE.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            addP.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        }
+        gAlgoM.add(isConnected);
+        gAlgoM.add(shortestPath);
+        gAlgoM.add(shortestPathDist);
+		menu.add(save);
+		addM.add(addE);
+		addM.add(addP);
 		return menuBar;
 	}
 
@@ -1669,13 +1694,61 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 				int sorce = Integer.parseInt(src);
 				int destenation = Integer.parseInt(des);
 				double weight = Double.parseDouble(wei);
-            System.out.println(sorce+" "+destenation+" "+weight);
 			Ggui.addE(sorce,destenation,weight);
 			Ggui.update();
 
 		}
 		else if((e.getActionCommand().equals("add P"))){
+            JFrame f;
+            f=new JFrame();
+            String locationX=JOptionPane.showInputDialog(f,"Enter X");
+            String locationY=JOptionPane.showInputDialog(f,"Enter Y");
+            double lX = Double.parseDouble(locationX);
+            double lY = Double.parseDouble(locationY);
+            Ggui.addPoint(new Point3D(lX,lY),0);
+            Ggui.update();
 
+		}
+		else if ((e.getActionCommand().equals("isConnected"))){
+			JFrame f;
+			f=new JFrame();
+			boolean b = Ggui.isConected();
+			if (b){
+				JOptionPane.showMessageDialog(f,"The graph is connected");
+			}else {
+				JOptionPane.showMessageDialog(f,"The graph is not connected");
+			}
+		}
+		else if ((e.getActionCommand().equals("shortestPathDist"))){
+			JFrame f;
+			f=new JFrame();
+			String sorce=JOptionPane.showInputDialog(f,"Enter src");
+			String destenation=JOptionPane.showInputDialog(f,"Enter dest");
+			int src = Integer.parseInt(sorce);
+			int dest = Integer.parseInt(destenation);
+			double temp = Ggui.shortestPathDist(src,dest);
+			JOptionPane.showMessageDialog(f,"Te shortest Path Dist is "+temp);
+
+		}
+		else if ((e.getActionCommand().equals("shortestPath"))){
+			JFrame f;
+			f=new JFrame();
+			String sorce=JOptionPane.showInputDialog(f,"Enter src");
+			String destenation=JOptionPane.showInputDialog(f,"Enter dest");
+			int src = Integer.parseInt(sorce);
+			int dest = Integer.parseInt(destenation);
+			List<node_data> temp = Ggui.shortestPath(src,dest);
+			if (temp!=null&&!temp.isEmpty()){
+				node_data nodeA = temp.get(0);
+				node_data nodeB = null;
+				setPenColor(GREEN);
+				setPenRadius(0.01);
+				for (int i = 1 ; i<temp.size();i++){
+					nodeB = temp.get(i);
+					line(nodeA.getLocation().x(),nodeA.getLocation().y(),nodeB.getLocation().x(),nodeB.getLocation().y());
+					nodeA = nodeB;
+				}
+			}
 		}
 		else if((e.getActionCommand().equals("save"))) {
 			FileDialog chooser = new FileDialog(StdDraw.frame, "Use a .png or .jpg extension", FileDialog.SAVE);
