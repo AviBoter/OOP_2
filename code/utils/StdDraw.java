@@ -27,6 +27,8 @@ package utils;
  *
  ******************************************************************************/
 
+import gui.Graph_GUI;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.FileDialog;
@@ -67,13 +69,7 @@ import java.util.TreeSet;
 import java.util.NoSuchElementException;
 import javax.imageio.ImageIO;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 
 /**
  *  The {@code StdDraw} class provides a basic capability for
@@ -227,7 +223,7 @@ import javax.swing.KeyStroke;
  *  The canvas does not include the window title or window border.
  *  You can change the size of the canvas with the following method:
  *  <ul>
- *  <li> {@link #setCanvasSize(int width, int height)}
+ *  <li>
  *  </ul>
  *  <p>
  *  This sets the canvas size to be <em>width</em>-by-<em>height</em> pixels.
@@ -647,7 +643,7 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 	 * of a program.
 	 */
 	public static void setCanvasSize() {
-		setCanvasSize(DEFAULT_SIZE, DEFAULT_SIZE);
+		setCanvasSize(DEFAULT_SIZE, DEFAULT_SIZE,null);
 	}
 
 	/**
@@ -662,7 +658,9 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 	 * @throws IllegalArgumentException unless both {@code canvasWidth} and
 	 *         {@code canvasHeight} are positive
 	 */
-	public static void setCanvasSize(int canvasWidth, int canvasHeight) {
+	public static Graph_GUI Ggui;
+	public static void setCanvasSize(int canvasWidth, int canvasHeight, Graph_GUI graph_gui) {
+		    Ggui = graph_gui;
 		if (canvasWidth <= 0 || canvasHeight <= 0)
 			throw new IllegalArgumentException("width and height must be positive");
 		width = canvasWidth;
@@ -719,8 +717,8 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 		JMenu menu1 = new JMenu("Add");
 		menuBar.add(menu);
 		menuBar.add(menu1);
-		JMenuItem menuItem1 = new JMenuItem(" Save...   ");
-		JMenuItem menuItem2 = new JMenuItem(" add E     ");
+		JMenuItem menuItem1 = new JMenuItem("save");
+		JMenuItem menuItem2 = new JMenuItem("add E");
 		menuItem1.addActionListener(std);
 		menuItem2.addActionListener(std);
 		menuItem1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
@@ -1661,11 +1659,30 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		FileDialog chooser = new FileDialog(StdDraw.frame, "Use a .png or .jpg extension", FileDialog.SAVE);
-		chooser.setVisible(true);
-		String filename = chooser.getFile();
-		if (filename != null) {
-			StdDraw.save(chooser.getDirectory() + File.separator + chooser.getFile());
+
+		if (e.getActionCommand().equals("add E")){
+			JFrame f;
+				f=new JFrame();
+				String src=JOptionPane.showInputDialog(f,"Enter src");
+				String des=JOptionPane.showInputDialog(f,"Enter des");
+				String wei=JOptionPane.showInputDialog(f,"Enter weight");
+				int sorce = Integer.parseInt(src);
+				int destenation = Integer.parseInt(src);
+				double weight = Double.parseDouble(wei);
+			Ggui.addE(sorce,destenation,weight);
+			Ggui.update();
+
+		}
+		else if((e.getActionCommand().equals("add P"))){
+
+		}
+		else if((e.getActionCommand().equals("save"))) {
+			FileDialog chooser = new FileDialog(StdDraw.frame, "Use a .png or .jpg extension", FileDialog.SAVE);
+			chooser.setVisible(true);
+			String filename = chooser.getFile();
+			if (filename != null) {
+				StdDraw.save(chooser.getDirectory() + File.separator + chooser.getFile());
+			}
 		}
 	}
 

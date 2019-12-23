@@ -1,8 +1,9 @@
 package dataStructure;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class DGraph implements graph{
+public class DGraph implements graph, Serializable {
 	private HashMap<Integer,node_data> NMap = new LinkedHashMap<>();
 	private HashMap<Integer,HashMap<Integer,edge_data>> EMap = new LinkedHashMap<>();
 	private int _EdgeZise = 0;
@@ -12,18 +13,21 @@ public class DGraph implements graph{
     }
 	public DGraph(graph g){
         Collection<node_data> tempV = g.getV();
+
 		for (dataStructure.node_data node_data : tempV) {
 			NodeData nodeData = new NodeData(node_data);
 			NMap.put(nodeData.getKey(), nodeData);
 			Collection<edge_data> tempE = g.getE(nodeData.getKey());
-			for (dataStructure.edge_data edge_data : tempE) {
-				Edata edata = new Edata(edge_data);
-				if (!EMap.containsKey(edata.getSrc())) {
-					HashMap<Integer, edge_data> tempHASH = new LinkedHashMap<>();
-					tempHASH.put(edata.getDest(), edata);
-					EMap.put(edata.getSrc(), tempHASH);
-				} else {
-					EMap.get(edata.getSrc()).put(edata.getDest(), edata);
+			if(tempE!=null) {
+				for (dataStructure.edge_data edge_data : tempE) {
+					Edata edata = new Edata(edge_data);
+					if (!EMap.containsKey(edata.getSrc())) {
+						HashMap<Integer, edge_data> tempHASH = new LinkedHashMap<>();
+						tempHASH.put(edata.getDest(), edata);
+						EMap.put(edata.getSrc(), tempHASH);
+					} else {
+						EMap.get(edata.getSrc()).put(edata.getDest(), edata);
+					}
 				}
 			}
 		}
@@ -60,7 +64,7 @@ public class DGraph implements graph{
 		if (!(NMap.containsKey(dest)&&NMap.containsKey(src)))
 			throw new RuntimeException("not Exist");
 		edge_data edata = new Edata(src,dest,w);
-		if (EMap.containsKey(src)&&EMap.get(src).containsKey(dest)){
+		if (EMap.containsKey(src)){
 			EMap.get(src).put(dest,edata);
 		}else {
 			HashMap<Integer,edge_data> temp = new LinkedHashMap<>();
@@ -74,16 +78,17 @@ public class DGraph implements graph{
 
 	@Override
 	public Collection<node_data> getV() {
-		List<node_data> list = new ArrayList<>(NMap.values());
-		return list;
+		return (Collection<node_data>)NMap.values();
 	}
 
 	@Override
 	public Collection<edge_data> getE(int node_id) {
-		if (!NMap.containsKey(node_id))
+		if (!NMap.containsKey(node_id)) {
 			return null;
-		if (!EMap.containsKey(node_id))
+		}
+		if (!EMap.containsKey(node_id)) {
 			return null;
+		}
 		return EMap.get(node_id).values();
 	}
 

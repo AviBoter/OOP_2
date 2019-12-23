@@ -1,6 +1,6 @@
 package algorithms;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 import dataStructure.*;
@@ -11,21 +11,37 @@ import dataStructure.*;
  * @author 
  *
  */
-public class Graph_Algo implements graph_algorithms{
-	DGraph _G = new DGraph();
+public class Graph_Algo implements graph_algorithms, Serializable {
+	public graph _G = new DGraph();
 
 	@Override
 	public void init(graph g) {
-		_G = new DGraph(g);
+		_G = g;
 	}
 
 	@Override
 	public void init(String file_name) {
-		// TODO Auto-generated method stub
+		try {
+			FileInputStream file = new FileInputStream(file_name);
+			ObjectInputStream objectInputStream = new ObjectInputStream(file);
+			graph g = (graph)objectInputStream.readObject();
+			init(g);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 	@Override
 	public void save(String file_name) {
-		// TODO Auto-generated method stub
+		try {
+			FileOutputStream file= new FileOutputStream(file_name);
+			ObjectOutputStream objectOutputStream = new ObjectOutputStream(file);
+			objectOutputStream.writeObject(this._G);
+			objectOutputStream.close();
+			file.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -87,7 +103,7 @@ public class Graph_Algo implements graph_algorithms{
 
 	@Override
 	public double shortestPathDist(int src, int dest) {
-		return _G.shortestPathDist(src,dest);
+		return 0;
 	}
 
 	@Override

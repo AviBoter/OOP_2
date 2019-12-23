@@ -1,6 +1,8 @@
 package dataStructure;
 
-public class Edata implements edge_data {
+import java.io.Serializable;
+
+public class Edata implements edge_data, Serializable {
 	private int Src,Dest,tag;
 	double Weight;
 	private String info;

@@ -3,99 +3,132 @@ package gui;
 import algorithms.Graph_Algo;
 import dataStructure.*;
 import utils.Point3D;
+import utils.Range;
 import utils.StdDraw;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.LinkedList;
+import java.io.Serializable;
+import java.util.*;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
-public class Graph_GUI {
+public class Graph_GUI implements Serializable {
+
     static class Active extends TimerTask {
         Graph_GUI gui;
+        boolean press = false;
+        Point3D temp1 = null;
+        Point3D temp2 = null;
+        Date date;
+        long time;
         public Active(Graph_GUI graphGui){
             gui = graphGui;
         }
         public void run(){
             //newLocation(gui);
-            if (StdDraw.isMousePressed()){
+            if (StdDraw.isMousePressed()&&!press){
+                date = new Date();
+                time = date.getTime();
+                press = true;
                 double x = StdDraw.mouseX();
                 double y = StdDraw.mouseY();
-                Point3D temp = new Point3D(x,y);
-                gui.addPoint(temp,0);
+                temp1 = new Point3D(x,y);
+                gui.addPoint(temp1,0);
                 gui.update();
             }
+            if (StdDraw.isMousePressed()&&press){
+                date = new Date();
+
+            }
+
+            if (!StdDraw.isMousePressed()&&press&&date.getTime()-time>300){
+                double x = StdDraw.mouseX();
+                double y = StdDraw.mouseY();
+                temp2 = new Point3D(x,y);
+                gui.addPoint(temp2,0);
+                gui.update();
+                gui.addE(gui._id-1,gui._id,0);
+                press = false;
+                gui.update();
+
+            }
+            else if (!StdDraw.isMousePressed()&&press){
+                press = false;
+
+            }
+
 
         }
     }
+    public  int _id = 0;
 
-    private Graph_Algo graphAlgo = new Graph_Algo();
     private DGraph dGraph = new DGraph();
+    private Graph_Algo graphAlgo = new Graph_Algo();
+
 
     public Graph_GUI(){
 
     }
+
     public void addPoint(Point3D p,double weight){
         NodeData temp = new NodeData(p,weight);
         dGraph.addNode(temp);
 
     }
+
     public void addE(int src,int dest, double weight){
-        Edata edata = new Edata(src,dest,weight);
-        ((NodeData)dGraph.getNode(src)).put(dest,edata);
+        dGraph.connect(src,dest,weight);
 
     }
+
     public void draw(int width,int height){
-        StdDraw.setCanvasSize(width,height);
+        StdDraw.setCanvasSize(width,height,this);
         StdDraw.setXscale(NodeData.getMinX(),NodeData.getMaxX());
         StdDraw.setYscale(NodeData.getMinY(),NodeData.getMaxY());
         update();
     }
+    public void draw(int width, int height, Range x, Range y){
+        StdDraw.setCanvasSize(width,height,this);
+        StdDraw.setXscale(x.get_min(),x.get_max());
+        StdDraw.setYscale(y.get_min(),y.get_max());
+        update();
+    }
+
     public void update() {
         StdDraw.clear();
         StdDraw.setPenRadius(0.01);
         for (node_data n : dGraph.getV()) {
-            List<edge_data> myE = new LinkedList<>(((NodeData) n).getE());
-            StdDraw.setPenColor(Color.blue);
-            StdDraw.setPenRadius(0.04);
-            StdDraw.point(n.getLocation().x(), n.getLocation().y());
-            StdDraw.setPenColor(Color.green);
-            StdDraw.setPenRadius(0.02);
-            StdDraw.text(n.getLocation().x(), n.getLocation().y(),n.getKey()+"");
-            StdDraw.setPenColor(StdDraw.BLACK);
-            StdDraw.setPenRadius(0.01);
-            for (edge_data edge : myE) {
-                double x0 = n.getLocation().x();
-                double y0 = n.getLocation().y();
-                double y1 = dGraph.getNode(edge.getDest()).getLocation().y();
-                double x1 = dGraph.getNode(edge.getDest()).getLocation().x();
-
-                StdDraw.line(x0, y0, x1, y1);
-                StdDraw.setPenRadius(0.03);
-                StdDraw.setPenColor(StdDraw.RED);
-                StdDraw.point(0.1*x0+0.9*x1,0.1*y0+0.9*y1);
-//                double deltaX = x1 - x0;
-//                double deltaY = y1 - y0;
-//                double slope = deltaY / deltaX;
-//                double f = y0 - x0 * slope;
-//                StdDraw.setPenRadius(0.02);
-//                StdDraw.setPenColor(StdDraw.RED);
-//                if (y0<=y1) {
-//                    StdDraw.point((x1 + 1), (x1 + 1) * slope + f);
-//                }else {
-//                    StdDraw.point((x1 -2), (x1 -2) * slope + f);
-//                }
-                StdDraw.setPenRadius(0.01);
+            if (dGraph.getE(n.getKey())!=null) {
+                List<edge_data> myE = new LinkedList<>(dGraph.getE(n.getKey()));
+                StdDraw.setPenColor(Color.blue);
+                StdDraw.setPenRadius(0.04);
+                StdDraw.point(n.getLocation().x(), n.getLocation().y());
+                StdDraw.setPenColor(Color.green);
+                StdDraw.setPenRadius(0.02);
+                StdDraw.text(n.getLocation().x(), n.getLocation().y(), n.getKey() + "");
                 StdDraw.setPenColor(StdDraw.BLACK);
+                StdDraw.setPenRadius(0.01);
+                for (edge_data edge : myE) {
+                    double x0 = n.getLocation().x();
+                    double y0 = n.getLocation().y();
+                    double y1 = dGraph.getNode(edge.getDest()).getLocation().y();
+                    double x1 = dGraph.getNode(edge.getDest()).getLocation().x();
+
+                    StdDraw.line(x0, y0, x1, y1);
+                    StdDraw.setPenRadius(0.03);
+                    StdDraw.setPenColor(StdDraw.RED);
+                    StdDraw.point(0.1 * x0 + 0.9 * x1, 0.1 * y0 + 0.9 * y1);
+                    StdDraw.setPenRadius(0.01);
+                    StdDraw.setPenColor(StdDraw.BLACK);
+                }
             }
+            _id= n.getKey();
+
         }
     }
 
     public void delete(int key) {
         dGraph.removeNode(key);
-        update();
     }
 
     public static void newLocation(Graph_GUI graph_gui){
@@ -112,6 +145,16 @@ public class Graph_GUI {
         graphAlgo.init(dGraph);
         return graphAlgo.isConnected();
     }
+    public void save(String filename){
+        graphAlgo.init(dGraph);
+        graphAlgo.save(filename);
+
+    }
+    public void initGraph(String filename){
+        graphAlgo.init("fileTEST");
+        dGraph=new DGraph( graphAlgo._G);
+
+    }
 
     public static void main(String[] args){
         Graph_GUI test = new Graph_GUI();
@@ -120,11 +163,13 @@ public class Graph_GUI {
         Point3D p3 = new Point3D(40,40);
         Point3D p4 = new Point3D(40,20);
         Point3D p5 = new Point3D(30,30);
+        Point3D p6 = new Point3D(50,50);
         test.addPoint(p1,0);
         test.addPoint(p2,0);
         test.addPoint(p3,0);
         test.addPoint(p4,0);
         test.addPoint(p5,0);
+        test.addPoint(p6,0);
         test.addE(0,1,0);
         test.addE(0,3,0);
         test.addE(0,4,0);
@@ -135,73 +180,20 @@ public class Graph_GUI {
         test.addE(3,4,0);
 
         test.delete(0);
+//        System.out.println(1);
         //System.out.println(test.isConected());
-        System.out.println(1);
-        System.out.println(test.isConected());
+        //Timer timer = new Timer();
+        //test.save("fileTEST");
+        //Graph_GUI test2 = new Graph_GUI();
+        //test2.initGraph("fileTEST");
+        //test2.dGraph = new DGraph(test2.graphAlgo._G);
+        //test2.isConected();
+        test.draw(1200,800,new Range(-100,100),new Range(-100,100));
 
-//        test.addPoint(p3,0);
-//        test.addPoint(p4,0);
-//        test.addPoint(p5,0);
-//
-//        Point3D p6 = new Point3D(90,10);
-//        Point3D p7 = new Point3D(85,14);
-//        Point3D p8 = new Point3D(76,35);
-//        Point3D p9 = new Point3D(64,45);
-       // Point3D p10 = new Point3D(60,80);
-//        test.addPoint(p6,0);
-//        test.addPoint(p7,0);
-//        test.addPoint(p8,0);
-//        test.addPoint(p9,0);
-//        test.addE(0,1,0);
-//        test.addE(1,2,0);
-//        test.addE(2,3,0);
-//        test.addE(2,4,0);
-//        test.addE(2,5,0);
-//        test.addE(2,6,0);
-//        test.addE(2,7,0);
-//        test.addE(2,8,0);
-        //
-//        test.addE(3,4,0);
-//        test.addE(4,3,0);
-        //
-//        test.addE(5,6,0);
-//        test.addE(6,7,0);
-//        test.addE(7,8,0);
-//        test.addE(8,2,0);
-//        test.addE(8,0,0);
-//        test.addE(3,8,0);
-//        test.addE(4,8,0);
+        //timer.schedule(new Active(test2), 1, 1);
+       // test2.addE(3,4,0);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //test.addE(9,4,0);
-//        for (int i=0; i<10;i++){
-//            double x = (Math.random()*100);
-//            double y = (Math.random()*100);
-//            Point3D temp = new Point3D(x,y);
-//            test.addPoint(temp,0);
-//        }
-//        for (int i = 0; i<5;i++){
-//            int x = (int)(Math.random()*10);
-//            int y = (int)(Math.random()*10);
-//            test.addE(x,y,0);
-//        }
-        test.draw(800,600);
-        //System.out.println(test.isConected());
-        Timer timer = new Timer();
-        timer.schedule(new Active(test), 0, 1);
 
 
     }
