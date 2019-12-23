@@ -156,31 +156,54 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 
 	@Override
 	public List<node_data> shortestPath(int src, int dest) {
-//		HashMap<Integer, List<node_data>> myBoard = new LinkedHashMap<>();
-//		Queue<Integer> myQueue = new LinkedList<>();
-//		int current;
-//		myQueue.add(src);
-//		myBoard.put(src,0.0);
-//		while (!myQueue.isEmpty()) {
-//			current = myQueue.poll();
-//			if (current == dest) {
-//				return myBoard.get(dest);
-//			}
-//			ArrayList<edge_data> myEData = new ArrayList<>(_G.getE(current));
-//			boolean flag = true;
-//			while (flag) {
-//				int minIndex = minInArray(myEData);
-//				if (minIndex != -1) {
-//					edge_data minE = myEData.remove(minIndex);
-//					updateBoard(myBoard, minE);
-//					myQueue.add(minE.getDest());
-//				}
-//				else flag =false;
-//			}
-//		}
-//		return myBoard.get(dest);
-
-		return null;
+		HashMap<Integer, Double> myBoard = new LinkedHashMap<>();
+		HashMap<Integer, LinkedList<node_data>> myBoardList = new LinkedHashMap<>();
+		Queue<Integer> myQueue = new LinkedList<>();
+		int current;
+		boolean desH = false;
+		myQueue.add(src);
+		myBoard.put(src,0.0);
+		LinkedList<node_data> temp = new LinkedList<>();
+		temp.add(_G.getNode(src));
+		myBoardList.put(src,temp);
+		while (!myQueue.isEmpty()) {
+			current = myQueue.poll();
+			if (current == dest) {
+				desH = true;
+			}
+			else desH = false;
+			ArrayList<edge_data> myEData = new ArrayList<>(_G.getE(current));
+			boolean flag = true;
+			while (!desH&&flag) {
+				int minIndex = minInArray(myEData);
+				if (minIndex != -1) {
+					edge_data minE = myEData.remove(minIndex);
+					updateBoard(myBoard, minE,myBoardList);
+					myQueue.add(minE.getDest());
+				}
+				else flag =false;
+			}
+		}
+		return myBoardList.get(dest);
+	}
+	private void updateBoard(HashMap<Integer,Double> board,edge_data myedge,HashMap<Integer, LinkedList<node_data>> map){
+		int dest =  myedge.getDest();
+		int src = myedge.getSrc();
+		LinkedList<node_data> list = map.get(src);
+		double amount = myedge.getWeight()+board.get(src);
+		if (!board.containsKey(dest)){
+			LinkedList<node_data> tempList  =new LinkedList<>(list);
+			tempList.add(_G.getNode(dest));
+			board.put(dest,amount);
+			map.put(dest,tempList);
+		}else {
+			if (board.get(dest)>amount){
+				LinkedList<node_data> tempList  =new LinkedList<>(list);
+				tempList.add(_G.getNode(dest));
+				board.put(dest,amount);
+				map.put(dest,tempList);
+			}
+		}
 	}
 
 
