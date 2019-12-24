@@ -69,17 +69,17 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 			while (FLAG) {
 				FLAG = false;
 				if (_G.getE(current.getKey())==null) return false;
-					List<edge_data> list = new LinkedList<>(_G.getE(current.getKey()));
-					if (list.isEmpty()) return false;
-					for (edge_data i : list) {
-						if (_G.getNode(i.getDest()).getTag() !=k) {
-							_G.getNode(i.getDest()).setTag(k);
-							myQue.add(_G.getNode(i.getDest()));
-						}
-						else if (!second){
-							finish.add(current);
-						}
+				List<edge_data> list = new LinkedList<>(_G.getE(current.getKey()));
+				if (list.isEmpty()) return false;
+				for (edge_data i : list) {
+					if (_G.getNode(i.getDest()).getTag() !=k) {
+						_G.getNode(i.getDest()).setTag(k);
+						myQue.add(_G.getNode(i.getDest()));
 					}
+					else if (!second){
+						finish.add(current);
+					}
+				}
 				if (!myQue.isEmpty()) {
 					current = myQue.poll();
 					FLAG = true;
@@ -103,107 +103,81 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 
 	@Override
 	public double shortestPathDist(int src, int dest) {
-		HashMap<Integer, Double> myBoard = new LinkedHashMap<>();
-		Queue<Integer> myQueue = new LinkedList<>();
-		int current;
-		boolean desH = false;
-		myQueue.add(src);
-		myBoard.put(src,0.0);
-		while (!myQueue.isEmpty()) {
-			current = myQueue.poll();
-			if (current == dest) {
-				desH = true;
+		Queue<Edata> Pqueue = new LinkedList<Edata>();
+		HashMap<Integer,Double> dist=new HashMap<Integer,Double>(_G.nodeSize());
+		NodeData Runner=(NodeData)_G.getNode(src);
+		Edata CurNode = null;
+
+		dist.put(src,(double)0);
+		int i=0;
+
+		while(i<_G.nodeSize()-1 || CurNode.getSrc()==dest) {                                         
+			AddEdgesToPriorityQueue(Pqueue,Runner);
+			CurNode=(Edata)Pqueue.poll();
+			Runner=(NodeData)_G.getNode(CurNode.getDest());
+			if(!dist.containsKey(CurNode.getDest()) || (dist.containsKey(CurNode.getDest()) && dist.get(CurNode.getDest())>dist.get(CurNode.getSrc())+CurNode.getWeight())) {
+				dist.put(CurNode.getDest(),dist.get(CurNode.getSrc())+CurNode.getWeight());
 			}
-			else desH = false;
-			ArrayList<edge_data> myEData = new ArrayList<>(_G.getE(current));
-			boolean flag = true;
-			while (!desH&&flag) {
-				int minIndex = minInArray(myEData);
-				if (minIndex != -1) {
-					edge_data minE = myEData.remove(minIndex);
-					updateBoard(myBoard, minE);
-					myQueue.add(minE.getDest());
-				}
-				else flag =false;
-			}
+			i++;
 		}
-		return myBoard.get(dest);
+		return dist.get(dest).doubleValue();
 	}
-	private void updateBoard(HashMap<Integer,Double> board,edge_data myedge){
-		int dest =  myedge.getDest();
-		int src = myedge.getSrc();
-		double amount = myedge.getWeight()+board.get(src);
-		if (!board.containsKey(dest)){
-			board.put(dest,amount);
-		}else {
-			if (board.get(dest)>amount){
-				board.put(dest,amount);
+
+	private void AddEdgesToPriorityQueue(Queue<Edata> Pqueue,NodeData Runner) {
+		Collection<edge_data> Col=_G.getE(Runner.getKey());
+		PriorityQueue<edge_data> minHeap = new PriorityQueue<edge_data>(new Comparator<edge_data>() {
+			@Override
+			public int compare(edge_data o1, edge_data o2) {
+				return - Double.compare(o2.getWeight(),o1.getWeight());
 			}
+		});
+
+		while(Col.iterator().hasNext()) {
+			minHeap.add(Col.iterator().next());
+			Col.remove(Col.iterator().next());
 		}
-	}
-	private int minInArray(List<edge_data> myList){
-		if (! myList.isEmpty()) {
-			int minWE = 0;
-			for (int i = 1; i < myList.size(); i++) {
-				if (myList.get(minWE).getWeight()>myList.get(i).getWeight()){
-					minWE = i;
-				}
-			}
-			return minWE;
+		while(minHeap.iterator().hasNext()) {
+			Pqueue.add((Edata)minHeap.poll());
 		}
-		return -1;
 	}
 
 	@Override
 	public List<node_data> shortestPath(int src, int dest) {
-		HashMap<Integer, Double> myBoard = new LinkedHashMap<>();
-		HashMap<Integer, LinkedList<node_data>> myBoardList = new LinkedHashMap<>();
-		Queue<Integer> myQueue = new LinkedList<>();
-		int current;
-		boolean desH = false;
-		myQueue.add(src);
-		myBoard.put(src,0.0);
-		LinkedList<node_data> temp = new LinkedList<>();
-		temp.add(_G.getNode(src));
-		myBoardList.put(src,temp);
-		while (!myQueue.isEmpty()) {
-			current = myQueue.poll();
-			if (current == dest) {
-				desH = true;
+		Queue<Edata> Pqueue = new LinkedList<Edata>();
+		HashMap<Integer,Double> dist=new HashMap<Integer,Double>(_G.nodeSize());
+		HashMap<Integer,ArrayList<Integer>> Paths=new HashMap<Integer,ArrayList<Integer>>(_G.nodeSize());
+		NodeData Runner=(NodeData)_G.getNode(src);
+		Edata CurNode = null;
+
+		dist.put(src,(double)0);
+		Paths.put(src, new ArrayList<Integer>());
+		Paths.get(src).add(0);
+		int i=0;
+
+		while(i<_G.nodeSize()-1 || CurNode.getSrc()==dest) {                                         
+			AddEdgesToPriorityQueue(Pqueue,Runner);
+			CurNode=(Edata)Pqueue.poll();
+			Runner=(NodeData)_G.getNode(CurNode.getDest());
+			if(!dist.containsKey(CurNode.getDest()) || (dist.containsKey(CurNode.getDest()) && dist.get(CurNode.getDest())>dist.get(CurNode.getSrc())+CurNode.getWeight())) {
+					Paths.put(CurNode.getDest(), new ArrayList<Integer>());
+					dist.put(CurNode.getDest(),dist.get(CurNode.getSrc())+CurNode.getWeight());
+					int k=0;
+					while(k<Paths.get(CurNode.getSrc()).size()) {
+						Paths.get(CurNode.getDest()).add(Paths.get(CurNode.getSrc()).get(k));
+						k++;
+					}
+					Paths.get(CurNode.getDest()).add(CurNode.getDest());
 			}
-			else desH = false;
-			ArrayList<edge_data> myEData = new ArrayList<>(_G.getE(current));
-			boolean flag = true;
-			while (!desH&&flag) {
-				int minIndex = minInArray(myEData);
-				if (minIndex != -1) {
-					edge_data minE = myEData.remove(minIndex);
-					updateBoard(myBoard, minE,myBoardList);
-					myQueue.add(minE.getDest());
-				}
-				else flag =false;
-			}
+			i++;
 		}
-		return myBoardList.get(dest);
-	}
-	private void updateBoard(HashMap<Integer,Double> board,edge_data myedge,HashMap<Integer, LinkedList<node_data>> map){
-		int dest =  myedge.getDest();
-		int src = myedge.getSrc();
-		LinkedList<node_data> list = map.get(src);
-		double amount = myedge.getWeight()+board.get(src);
-		if (!board.containsKey(dest)){
-			LinkedList<node_data> tempList  =new LinkedList<>(list);
-			tempList.add(_G.getNode(dest));
-			board.put(dest,amount);
-			map.put(dest,tempList);
-		}else {
-			if (board.get(dest)>amount){
-				LinkedList<node_data> tempList  =new LinkedList<>(list);
-				tempList.add(_G.getNode(dest));
-				board.put(dest,amount);
-				map.put(dest,tempList);
-			}
+		List<node_data> Ans=new LinkedList<node_data>();
+		int j=0;
+		while(j<Paths.get(dest).size()) {
+			Ans.add(_G.getNode(Paths.get(dest).get(j)));
+			System.out.println(Paths.get(dest).get(j));
+			j++;
 		}
+		return Ans;
 	}
 
 
@@ -218,5 +192,6 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }
