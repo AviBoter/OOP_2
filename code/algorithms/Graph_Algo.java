@@ -121,15 +121,15 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 				int minIndex = minInArray(myEData);
 				if (minIndex != -1) {
 					edge_data minE = myEData.remove(minIndex);
-					updateBoard(myBoard, minE);
-					myQueue.add(minE.getDest());
+					if(updateBoard(myBoard, minE))
+						myQueue.add(minE.getDest());
 				}
 				else flag =false;
 			}
 		}
 		return myBoard.get(dest);
 	}
-	private void updateBoard(HashMap<Integer,Double> board,edge_data myedge){
+	private boolean updateBoard(HashMap<Integer,Double> board,edge_data myedge){
 		int dest =  myedge.getDest();
 		int src = myedge.getSrc();
 		double amount = myedge.getWeight()+board.get(src);
@@ -139,7 +139,11 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 			if (board.get(dest)>amount){
 				board.put(dest,amount);
 			}
+			else {
+				return false;
+			}
 		}
+		return true;
 	}
 	private int minInArray(List<edge_data> myList){
 		if (! myList.isEmpty()) {
@@ -178,15 +182,15 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 				int minIndex = minInArray(myEData);
 				if (minIndex != -1) {
 					edge_data minE = myEData.remove(minIndex);
-					updateBoard(myBoard, minE,myBoardList);
-					myQueue.add(minE.getDest());
+					if(updateBoard(myBoard, minE,myBoardList))
+						myQueue.add(minE.getDest());
 				}
 				else flag =false;
 			}
 		}
 		return myBoardList.get(dest);
 	}
-	private void updateBoard(HashMap<Integer,Double> board,edge_data myedge,HashMap<Integer, LinkedList<node_data>> map){
+	private boolean updateBoard(HashMap<Integer,Double> board,edge_data myedge,HashMap<Integer, LinkedList<node_data>> map){
 		int dest =  myedge.getDest();
 		int src = myedge.getSrc();
 		LinkedList<node_data> list = map.get(src);
@@ -203,7 +207,9 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 				board.put(dest,amount);
 				map.put(dest,tempList);
 			}
+			else return false;
 		}
+		return true;
 	}
 
 
