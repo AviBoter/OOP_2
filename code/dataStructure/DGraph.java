@@ -11,13 +11,13 @@ public class DGraph implements graph, Serializable {
 
 	public DGraph(){
     }
-	public DGraph(graph g){
+	public DGraph(graph g){//fix it
         Collection<node_data> tempV = g.getV();
 
 		for (dataStructure.node_data node_data : tempV) {
 			NodeData nodeData = new NodeData(node_data);
 			NMap.put(nodeData.getKey(), nodeData);
-			Collection<edge_data> tempE = g.getE(nodeData.getKey());
+			Collection<edge_data> tempE = g.getE(node_data.getKey());
 			if(tempE!=null) {
 				for (dataStructure.edge_data edge_data : tempE) {
 					Edata edata = new Edata(edge_data);
@@ -29,6 +29,11 @@ public class DGraph implements graph, Serializable {
 						EMap.get(edata.getSrc()).put(edata.getDest(), edata);
 					}
 				}
+			}
+			else {
+				HashMap<Integer, edge_data> tempHASH = new LinkedHashMap<>();
+				EMap.put(nodeData.getKey(), tempHASH);
+
 			}
 		}
 
@@ -78,7 +83,7 @@ public class DGraph implements graph, Serializable {
 
 	@Override
 	public Collection<node_data> getV() {
-		return (Collection<node_data>)NMap.values();
+		return NMap.values();
 	}
 
 	@Override

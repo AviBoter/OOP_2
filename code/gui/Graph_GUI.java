@@ -70,6 +70,10 @@ public class Graph_GUI implements Serializable {
 
 
     public Graph_GUI(){
+        draw(1200,800,new Range(-100,100),new Range(-100,100));
+        Timer timer = new Timer();
+        timer.schedule(new Active(this), 1, 1);
+
 
     }
 
@@ -101,16 +105,16 @@ public class Graph_GUI implements Serializable {
         StdDraw.clear();
         StdDraw.setPenRadius(0.01);
         for (node_data n : dGraph.getV()) {
+            StdDraw.setPenColor(Color.blue);
+            StdDraw.setPenRadius(0.04);
+            StdDraw.point(n.getLocation().x(), n.getLocation().y());
+            StdDraw.setPenColor(Color.green);
+            StdDraw.setPenRadius(0.02);
+            StdDraw.text(n.getLocation().x(), n.getLocation().y(), n.getKey() + "");
+            StdDraw.setPenColor(StdDraw.BLACK);
+            StdDraw.setPenRadius(0.01);
             if (dGraph.getE(n.getKey())!=null) {
                 List<edge_data> myE = new LinkedList<>(dGraph.getE(n.getKey()));
-                StdDraw.setPenColor(Color.blue);
-                StdDraw.setPenRadius(0.04);
-                StdDraw.point(n.getLocation().x(), n.getLocation().y());
-                StdDraw.setPenColor(Color.green);
-                StdDraw.setPenRadius(0.02);
-                StdDraw.text(n.getLocation().x(), n.getLocation().y(), n.getKey() + "");
-                StdDraw.setPenColor(StdDraw.BLACK);
-                StdDraw.setPenRadius(0.01);
                 for (edge_data edge : myE) {
                     double x0 = n.getLocation().x();
                     double y0 = n.getLocation().y();
@@ -118,7 +122,7 @@ public class Graph_GUI implements Serializable {
                     double x1 = dGraph.getNode(edge.getDest()).getLocation().x();
 
                     StdDraw.line(x0, y0, x1, y1);
-                    StdDraw.setPenColor(Color.cyan);
+                    StdDraw.setPenColor(Color.RED);
                     StdDraw.text(0.5 * x0 + 0.5 * x1, 0.5 * y0 + 0.5 * y1,edge.getWeight()+"");
                     StdDraw.setPenRadius(0.03);
                     StdDraw.setPenColor(StdDraw.RED);
@@ -134,6 +138,9 @@ public class Graph_GUI implements Serializable {
 
     public void delete(int key) {
         dGraph.removeNode(key);
+    }
+    public void delete(int src,int des) {
+        dGraph.removeEdge(src,des);
     }
 
     public static void newLocation(Graph_GUI graph_gui){
@@ -164,48 +171,13 @@ public class Graph_GUI implements Serializable {
 
     }
     public void initGraph(String filename){
-        graphAlgo.init("fileTEST");
+        graphAlgo.init(filename);
         dGraph=new DGraph( graphAlgo._G);
 
     }
 
     public static void main(String[] args){
         Graph_GUI test = new Graph_GUI();
-        Timer timer = new Timer();
-
-//        Point3D p1 = new Point3D(20,20);
-//        Point3D p2 = new Point3D(20,40);
-//        Point3D p3 = new Point3D(40,40);
-//        Point3D p4 = new Point3D(40,20);
-//        Point3D p5 = new Point3D(30,30);
-//        Point3D p6 = new Point3D(50,50);
-//        test.addPoint(p1,0);
-//        test.addPoint(p2,0);
-//        test.addPoint(p3,0);
-//        test.addPoint(p4,0);
-//        test.addPoint(p5,0);
-//        test.addPoint(p6,0);
-//        test.addE(0,1,0);
-//        test.addE(0,3,0);
-//        test.addE(0,4,0);
-//        test.addE(1,2,0);
-//        test.addE(1,4,0);
-//        test.addE(2,4,0);
-//        test.addE(2,3,0);
-//        test.addE(3,4,0);
-//
-//        test.delete(0);
-//        System.out.println(1);
-        //System.out.println(test.isConected());
-        //test.save("fileTEST");
-        //Graph_GUI test2 = new Graph_GUI();
-        //test2.initGraph("fileTEST");
-        //test2.dGraph = new DGraph(test2.graphAlgo._G);
-        //test2.isConected();
-        test.draw(1200,800,new Range(-100,100),new Range(-100,100));
-
-        timer.schedule(new Active(test), 1, 1);
-       // test2.addE(3,4,0);
 
 
 

@@ -718,13 +718,18 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 		JMenu menu = new JMenu("File");
 		JMenu addM = new JMenu("Add");
 		JMenu gAlgoM = new JMenu("Algo");
+		JMenu delete = new JMenu("Delete");
 		menuBar.add(menu);
 		menuBar.add(addM);
+		menuBar.add(delete);
 		menuBar.add(gAlgoM);
 
 		JMenuItem save = new JMenuItem("save");
+		JMenuItem load = new JMenuItem("load");
 		JMenuItem addE = new JMenuItem("add E");
 		JMenuItem addP = new JMenuItem("add P");
+		JMenuItem delE = new JMenuItem("del E");
+		JMenuItem delP = new JMenuItem("del P");
 		JMenuItem isConnected = new JMenuItem("isConnected");
 		JMenuItem shortestPathDist = new JMenuItem("shortestPathDist");
 		JMenuItem shortestPath = new JMenuItem("shortestPath");
@@ -733,8 +738,11 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
             shortestPathDist.addActionListener(std);
             shortestPath.addActionListener(std);
             save.addActionListener(std);
+            load.addActionListener(std);
             addE.addActionListener(std);
             addP.addActionListener(std);
+            delE.addActionListener(std);
+            delP.addActionListener(std);
         }
         {
             isConnected.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
@@ -750,8 +758,11 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
         gAlgoM.add(shortestPath);
         gAlgoM.add(shortestPathDist);
 		menu.add(save);
+		menu.add(load);
 		addM.add(addE);
 		addM.add(addP);
+		delete.add(delE);
+		delete.add(delP);
 		return menuBar;
 	}
 
@@ -1638,7 +1649,7 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 	 *
 	 * @param  filename the name of the file with one of the required suffixes
 	 */
-	public static void save(String filename) {
+	public static void savet(String filename) {
 		if (filename == null) throw new IllegalArgumentException();
 		File file = new File(filename);
 		String suffix = filename.substring(filename.lastIndexOf('.') + 1);
@@ -1677,6 +1688,10 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 			System.out.println("Invalid image file type: " + suffix);
 		}
 	}
+	public static void save(String filename) {
+		if (filename == null) throw new IllegalArgumentException();
+		Ggui.save(filename);
+	}
 
 
 	/**
@@ -1698,6 +1713,17 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 			Ggui.update();
 
 		}
+		else if (e.getActionCommand().equals("del E")){
+			JFrame f;
+				f=new JFrame();
+				String src=JOptionPane.showInputDialog(f,"Enter src");
+				String des=JOptionPane.showInputDialog(f,"Enter des");
+				int sorce = Integer.parseInt(src);
+				int destenation = Integer.parseInt(des);
+			Ggui.delete(sorce,destenation);
+			Ggui.update();
+
+		}
 		else if((e.getActionCommand().equals("add P"))){
             JFrame f;
             f=new JFrame();
@@ -1708,6 +1734,14 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
             Ggui.addPoint(new Point3D(lX,lY),0);
             Ggui.update();
 
+		}
+		else if((e.getActionCommand().equals("del P"))){
+            JFrame f;
+            f=new JFrame();
+            String pointId=JOptionPane.showInputDialog(f,"Enter P");
+			int pId = Integer.parseInt(pointId);
+			Ggui.delete(pId);
+            Ggui.update();
 		}
 		else if ((e.getActionCommand().equals("isConnected"))){
 			JFrame f;
@@ -1751,13 +1785,24 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 			}
 		}
 		else if((e.getActionCommand().equals("save"))) {
-			FileDialog chooser = new FileDialog(StdDraw.frame, "Use a .png or .jpg extension", FileDialog.SAVE);
+			FileDialog chooser = new FileDialog(StdDraw.frame, "save the graph", FileDialog.SAVE);
 			chooser.setVisible(true);
 			String filename = chooser.getFile();
 			if (filename != null) {
 				StdDraw.save(chooser.getDirectory() + File.separator + chooser.getFile());
 			}
 		}
+		else if((e.getActionCommand().equals("load"))) {
+			FileDialog chooser = new FileDialog(StdDraw.frame, "load the graph", FileDialog.LOAD);
+			chooser.setVisible(true);
+			String filename = chooser.getDirectory()+chooser.getFile();
+			if (filename != null)
+				System.out.println(filename);{
+				Ggui.initGraph(filename);
+				Ggui.update();
+			}
+		}
+
 	}
 
 
