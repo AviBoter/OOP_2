@@ -166,7 +166,6 @@ public class Graph_Algo implements graph_algorithms, Serializable{
 		}
 		return -1;
 	}
-
 	@Override
 	public List<node_data> shortestPath(int src, int dest) {
 		HashMap<Integer, Double> myBoard = new LinkedHashMap<>();
@@ -220,9 +219,7 @@ public class Graph_Algo implements graph_algorithms, Serializable{
 		}
 		return true;
 	}
-
-
-@Override
+    @Override
 	public List<node_data> TSP(List<Integer> targets)  {
 		if (targets == null || targets.isEmpty()) return null;
 		List<node_data> myNodeList = new LinkedList<>();
@@ -263,6 +260,8 @@ public class Graph_Algo implements graph_algorithms, Serializable{
 							List<node_data> iUj = new LinkedList<>();
 							if (tempJlist != null&&tempIlist != null) {
 								iUj.addAll(tempIlist);
+								if (iUj.contains(tempJlist.get(0)))
+									iUj.remove(tempJlist.get(0));
 								iUj.addAll(tempJlist);
 							}
 
@@ -275,11 +274,6 @@ public class Graph_Algo implements graph_algorithms, Serializable{
 			}
 		return null;
 	}
-
-
-
-
-
 	@Override
 	public graph copy() {
 		return new DGraph(_G);//
