@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 
 import dataStructure.*;
+import gui.Graph_GUI;
 
 /**
  * This empty class represents the set of graph-theory algorithms
@@ -11,7 +12,7 @@ import dataStructure.*;
  * @author 
  *
  */
-public class Graph_Algo implements graph_algorithms, Serializable {
+public class Graph_Algo implements graph_algorithms, Serializable{
 	public graph _G = new DGraph();
 
 	@Override
@@ -101,6 +102,13 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 		return true;
 	}
 
+
+
+	/**
+	 * xxc
+	 *
+	 */
+
 	@Override
 	public double shortestPathDist(int src, int dest) {
 		HashMap<Integer, Double> myBoard = new LinkedHashMap<>();
@@ -113,18 +121,19 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 			current = myQueue.poll();
 			if (current == dest) {
 				desH = true;
-			}
-			else desH = false;
-			ArrayList<edge_data> myEData = new ArrayList<>(_G.getE(current));
-			boolean flag = true;
-			while (!desH&&flag) {
-				int minIndex = minInArray(myEData);
-				if (minIndex != -1) {
-					edge_data minE = myEData.remove(minIndex);
-					if(updateBoard(myBoard, minE))
-						myQueue.add(minE.getDest());
+			} else desH = false;
+			if (_G.getE(current) != null) {
+
+				ArrayList<edge_data> myEData = new ArrayList<>(_G.getE(current));
+				boolean flag = true;
+				while (!desH && flag) {
+					int minIndex = minInArray(myEData);
+					if (minIndex != -1) {
+						edge_data minE = myEData.remove(minIndex);
+						if (updateBoard(myBoard, minE))
+							myQueue.add(minE.getDest());
+					} else flag = false;
 				}
-				else flag =false;
 			}
 		}
 		return myBoard.get(dest);
@@ -174,18 +183,18 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 			current = myQueue.poll();
 			if (current == dest) {
 				desH = true;
-			}
-			else desH = false;
-			ArrayList<edge_data> myEData = new ArrayList<>(_G.getE(current));
-			boolean flag = true;
-			while (!desH&&flag) {
-				int minIndex = minInArray(myEData);
-				if (minIndex != -1) {
-					edge_data minE = myEData.remove(minIndex);
-					if(updateBoard(myBoard, minE,myBoardList))
-						myQueue.add(minE.getDest());
+			} else desH = false;
+			if (_G.getE(current) != null) {
+				ArrayList<edge_data> myEData = new ArrayList<>(_G.getE(current));
+				boolean flag = true;
+				while (!desH && flag) {
+					int minIndex = minInArray(myEData);
+					if (minIndex != -1) {
+						edge_data minE = myEData.remove(minIndex);
+						if (updateBoard(myBoard, minE, myBoardList))
+							myQueue.add(minE.getDest());
+					} else flag = false;
 				}
-				else flag =false;
 			}
 		}
 		return myBoardList.get(dest);
@@ -213,16 +222,67 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 	}
 
 
-	@Override
-	public List<node_data> TSP(List<Integer> targets) {
-		// TODO Auto-generated method stub
+@Override
+	public List<node_data> TSP(List<Integer> targets)  {
+		if (targets == null || targets.isEmpty()) return null;
+		List<node_data> myNodeList = new LinkedList<>();
+		for (Integer i:targets){
+			myNodeList.add(_G.getNode(i));
+		}
+
+		HashMap<Integer, List<node_data>> myBoardList = new LinkedHashMap<>();
+		HashMap<Integer,HashMap<Integer,List<node_data>>> myBigBoard = new LinkedHashMap<>();
+
+		for (int i=0; i<targets.size();i++){
+			HashMap<Integer,List<node_data>> waysTemp =new LinkedHashMap<>();
+			for (int j=0; j<targets.size();j++){
+				if (i!=j){
+					List<node_data> nlist = shortestPath(targets.get(i),targets.get(j));
+					if (nlist!=null&&nlist.containsAll(myNodeList)) return nlist;
+
+					waysTemp.put(targets.get(j),nlist);
+					myBigBoard.put(targets.get(i),waysTemp);
+				}
+
+			}
+		}
+		for (int i=0; i<targets.size();i++) {
+			HashMap<Integer, List<node_data>> tempI = myBigBoard.get(targets.get(i));
+			for (int j = 0; j < targets.size(); j++) {
+				if (i != j) {
+					List<node_data> tempIlist = tempI.get(targets.get(j));//list i to j short
+					System.out.println();
+						HashMap<Integer, List<node_data>> tempJ = myBigBoard.get(targets.get(j));
+						if (6==targets.get(j) && targets.get(i)==0 ) {
+							System.out.println(tempJ);
+							System.out.println(tempIlist);
+
+						}
+						for (int k = 0; k < targets.size(); k++) {
+							List<node_data> tempJlist = tempJ.get(targets.get(k));//lis j to k
+							List<node_data> iUj = new LinkedList<>();
+							if (tempJlist != null&&tempIlist != null) {
+								iUj.addAll(tempIlist);
+								iUj.addAll(tempJlist);
+							}
+
+							if (iUj.containsAll(myNodeList)) return iUj;
+						}
+					}
+
+
+				}
+			}
 		return null;
 	}
 
+
+
+
+
 	@Override
 	public graph copy() {
-		// TODO Auto-generated method stub
-		return null;
+		return new DGraph(_G);//
 	}
 
 }

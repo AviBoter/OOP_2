@@ -11,7 +11,7 @@ public class DGraph implements graph, Serializable {
 
 	public DGraph(){
     }
-	public DGraph(graph g){//fix it
+	public DGraph(graph g){
         Collection<node_data> tempV = g.getV();
 
 		for (dataStructure.node_data node_data : tempV) {

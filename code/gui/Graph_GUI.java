@@ -175,6 +175,10 @@ public class Graph_GUI implements Serializable {
         dGraph=new DGraph( graphAlgo._G);
 
     }
+    public List<node_data> TSP(List<Integer> targets){
+        graphAlgo.init(dGraph);
+        return graphAlgo.TSP(targets);
+    }
 
     public static void main(String[] args){
         Graph_GUI test = new Graph_GUI();
