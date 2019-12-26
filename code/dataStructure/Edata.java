@@ -13,6 +13,8 @@ public class Edata implements edge_data, Serializable {
 		this.Weight = e.getWeight();
 	}
 	public Edata(int src,int dest, double weight){
+		if (weight<0) throw new RuntimeException("ERR: weight cant be negetive");
+		if (src==dest) throw new RuntimeException("ERR: the destination can't be equals to the source ");
 		this.Dest = dest;
 		this.Src = src;
 		this.Weight = weight;

@@ -36,7 +36,7 @@ public class Graph_GUI implements Serializable {
                 double x = StdDraw.mouseX();
                 double y = StdDraw.mouseY();
                 temp1 = new Point3D(x,y);
-                gui.addPoint(temp1,0);
+                gui.addPoint(temp1);
                 gui.update();
             }
             if (StdDraw.isMousePressed()&&press){
@@ -48,7 +48,7 @@ public class Graph_GUI implements Serializable {
                 double x = StdDraw.mouseX();
                 double y = StdDraw.mouseY();
                 temp2 = new Point3D(x,y);
-                gui.addPoint(temp2,0);
+                gui.addPoint(temp2);
                 gui.update();
                 gui.addE(gui._id-1,gui._id,0);
                 press = false;
@@ -77,8 +77,8 @@ public class Graph_GUI implements Serializable {
 
     }
 
-    public void addPoint(Point3D p,double weight){
-        NodeData temp = new NodeData(p,weight);
+    public void addPoint(Point3D p){
+        NodeData temp = new NodeData(p);
         dGraph.addNode(temp);
 
     }

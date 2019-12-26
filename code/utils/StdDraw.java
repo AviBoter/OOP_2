@@ -1731,7 +1731,7 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 				String locationY = JOptionPane.showInputDialog(f, "Enter Y");
 				double lX = Double.parseDouble(locationX);
 				double lY = Double.parseDouble(locationY);
-				Ggui.addPoint(new Point3D(lX, lY), 0);
+				Ggui.addPoint(new Point3D(lX, lY));
 				Ggui.update();
 
 			} else if ((e.getActionCommand().equals("del P"))) {

@@ -146,7 +146,4 @@ public class DGraph implements graph, Serializable {
 
 
 
-	public double shortestPathDist(int src, int dest) {
-		return 0;
-	}
 }
