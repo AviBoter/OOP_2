@@ -111,6 +111,8 @@ public class Graph_Algo implements graph_algorithms, Serializable{
 
 	@Override
 	public double shortestPathDist(int src, int dest) {
+		if (_G.getNode(src)== null||_G.getNode(dest)== null) throw new RuntimeException("src or dst dose not exist");
+		if (src == dest) return 0;
 		HashMap<Integer, Double> myBoard = new LinkedHashMap<>();
 		Queue<Integer> myQueue = new LinkedList<>();
 		int current;
@@ -168,6 +170,12 @@ public class Graph_Algo implements graph_algorithms, Serializable{
 	}
 	@Override
 	public List<node_data> shortestPath(int src, int dest) {
+		if (_G.getNode(src)== null||_G.getNode(dest)== null) throw new RuntimeException("src or dst dose not exist");
+		if (src == dest){
+			List<node_data> t = new LinkedList<>();
+			t.add(_G.getNode(src));
+			return t;
+		}
 		HashMap<Integer, Double> myBoard = new LinkedHashMap<>();
 		HashMap<Integer, LinkedList<node_data>> myBoardList = new LinkedHashMap<>();
 		Queue<Integer> myQueue = new LinkedList<>();

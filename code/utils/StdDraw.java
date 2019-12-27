@@ -1705,43 +1705,73 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 			if (e.getActionCommand().equals("add E")) {
 				JFrame f;
 				f = new JFrame();
-				String src = JOptionPane.showInputDialog(f, "Enter src");
-				String des = JOptionPane.showInputDialog(f, "Enter des");
-				String wei = JOptionPane.showInputDialog(f, "Enter weight");
-				int sorce = Integer.parseInt(src);
+				String src = JOptionPane.showInputDialog(f, "Enter src (Integer)");
+				String des = JOptionPane.showInputDialog(f, "Enter des (Integer)");
+				String wei = JOptionPane.showInputDialog(f, "Enter weight (>0)");
+				try {
+					int sorce = Integer.parseInt(src);
+					int destenation = Integer.parseInt(des);
+					double weight = Double.parseDouble(wei);
+					try {
+						Ggui.addE(sorce, destenation, weight);
+					} catch (Exception e2){
+						JOptionPane.showMessageDialog(f,"Something WRONG! PLS TRY AGAIN. Try to read the instructions");
+					}
+					Ggui.update();
+				}catch (Exception e1){
+					JOptionPane.showMessageDialog(f,"Integers Only");
+				}
+
+			}
+			else if (e.getActionCommand().equals("del E")) {
+				JFrame f;
+				f = new JFrame();
+				String src = JOptionPane.showInputDialog(f, "Enter src (Integer)");
+				String des = JOptionPane.showInputDialog(f, "Enter des (Integer)");
+				try {
+
+					int sorce = Integer.parseInt(src);
 				int destenation = Integer.parseInt(des);
-				double weight = Double.parseDouble(wei);
-				Ggui.addE(sorce, destenation, weight);
-				Ggui.update();
+					try {
+						Ggui.delete(sorce, destenation);
+					} catch (Exception e2){
+						JOptionPane.showMessageDialog(f,"Something WRONG! PLS TRY AGAIN. Try to read the instructions");
+					}
+					Ggui.update();
+				}catch (Exception e1){
+					JOptionPane.showMessageDialog(f,"Integers Only");
+				}
 
-			} else if (e.getActionCommand().equals("del E")) {
+			}
+			else if ((e.getActionCommand().equals("add P"))) {
 				JFrame f;
 				f = new JFrame();
-				String src = JOptionPane.showInputDialog(f, "Enter src");
-				String des = JOptionPane.showInputDialog(f, "Enter des");
-				int sorce = Integer.parseInt(src);
-				int destenation = Integer.parseInt(des);
-				Ggui.delete(sorce, destenation);
-				Ggui.update();
+				String locationX = JOptionPane.showInputDialog(f, "Enter X (real number)");
+				String locationY = JOptionPane.showInputDialog(f, "Enter Y (real number)");
+				try {
 
-			} else if ((e.getActionCommand().equals("add P"))) {
+					double lX = Double.parseDouble(locationX);
+					double lY = Double.parseDouble(locationY);
+					Ggui.addPoint(new Point3D(lX, lY));
+					Ggui.update();
+				} catch (Exception e1){
+					JOptionPane.showMessageDialog(f,"Real numbers only");
+				}
+
+			}
+			else if ((e.getActionCommand().equals("del P"))) {
 				JFrame f;
 				f = new JFrame();
-				String locationX = JOptionPane.showInputDialog(f, "Enter X");
-				String locationY = JOptionPane.showInputDialog(f, "Enter Y");
-				double lX = Double.parseDouble(locationX);
-				double lY = Double.parseDouble(locationY);
-				Ggui.addPoint(new Point3D(lX, lY));
-				Ggui.update();
-
-			} else if ((e.getActionCommand().equals("del P"))) {
-				JFrame f;
-				f = new JFrame();
-				String pointId = JOptionPane.showInputDialog(f, "Enter P");
-				int pId = Integer.parseInt(pointId);
-				Ggui.delete(pId);
-				Ggui.update();
-			} else if ((e.getActionCommand().equals("isConnected"))) {
+				String pointId = JOptionPane.showInputDialog(f, "Enter P (Integer)");
+				try {
+					int pId = Integer.parseInt(pointId);
+					Ggui.delete(pId);
+					Ggui.update();
+				}catch (Exception e1){
+					JOptionPane.showMessageDialog(f,"Integers Only");
+				}
+			}
+			else if ((e.getActionCommand().equals("isConnected"))) {
 				JFrame f;
 				f = new JFrame();
 				boolean b = Ggui.isConected();
@@ -1750,89 +1780,130 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 				} else {
 					JOptionPane.showMessageDialog(f, "The graph is not connected");
 				}
-			} else if ((e.getActionCommand().equals("shortestPathDist"))) {
+			}
+			else if ((e.getActionCommand().equals("shortestPathDist"))) {
 				JFrame f;
 				f = new JFrame();
-				String sorce = JOptionPane.showInputDialog(f, "Enter src");
-				String destenation = JOptionPane.showInputDialog(f, "Enter dest");
-				int src = Integer.parseInt(sorce);
-				int dest = Integer.parseInt(destenation);
-				double temp = Ggui.shortestPathDist(src, dest);
-				JOptionPane.showMessageDialog(f, "Te shortest Path Dist is " + temp);
+				try {
+					String sorce = JOptionPane.showInputDialog(f, "Enter src (Integer)");
+					String destenation = JOptionPane.showInputDialog(f, "Enter dest (Integer)");
+					int src = Integer.parseInt(sorce);
+					int dest = Integer.parseInt(destenation);
+					try {
+						double temp = Ggui.shortestPathDist(src, dest);
+						JOptionPane.showMessageDialog(f, "Te shortest Path Dist is " + temp);
+					}catch (Exception e2){
+						JOptionPane.showMessageDialog(f, e2);
 
-			} else if ((e.getActionCommand().equals("shortestPath"))) {
-				Ggui.update();
-				JFrame f;
-				f = new JFrame();
-				String sorce = JOptionPane.showInputDialog(f, "Enter src");
-				String destenation = JOptionPane.showInputDialog(f, "Enter dest");
-				int src = Integer.parseInt(sorce);
-				int dest = Integer.parseInt(destenation);
-				List<node_data> temp = Ggui.shortestPath(src, dest);
-				if (temp != null && !temp.isEmpty()) {
-					node_data nodeA = temp.get(0);
-					node_data nodeB = null;
-					setPenColor(GREEN);
-					setPenRadius(0.01);
-					for (int i = 1; i < temp.size(); i++) {
-						nodeB = temp.get(i);
-						line(nodeA.getLocation().x(), nodeA.getLocation().y(), nodeB.getLocation().x(), nodeB.getLocation().y());
-						nodeA = nodeB;
 					}
 				}
-			} else if ((e.getActionCommand().equals("TSP"))) {
+				catch (Exception e1){
+					JOptionPane.showMessageDialog(f,"Integers Only");
+				}
+
+			}
+			else if ((e.getActionCommand().equals("shortestPath"))) {
 				Ggui.update();
 				JFrame f;
 				f = new JFrame();
-				String keys = JOptionPane.showInputDialog(f, "Enter keys");
+				try {
+
+					String sorce = JOptionPane.showInputDialog(f, "Enter src");
+					String destenation = JOptionPane.showInputDialog(f, "Enter dest");
+					int src = Integer.parseInt(sorce);
+					int dest = Integer.parseInt(destenation);
+					try {
+
+						List<node_data> temp = Ggui.shortestPath(src, dest);
+						if (temp != null && !temp.isEmpty()) {
+							node_data nodeA = temp.get(0);
+							node_data nodeB = null;
+							setPenColor(GREEN);
+							setPenRadius(0.01);
+							for (int i = 1; i < temp.size(); i++) {
+								nodeB = temp.get(i);
+								line(nodeA.getLocation().x(), nodeA.getLocation().y(), nodeB.getLocation().x(), nodeB.getLocation().y());
+								nodeA = nodeB;
+							}
+						}
+					}catch (Exception e2){
+						JOptionPane.showMessageDialog(f, e2);
+					}
+				}catch (Exception e1){
+					JOptionPane.showMessageDialog(f,"Integers Only");
+				}
+			}
+			else if ((e.getActionCommand().equals("TSP"))) {
+				Ggui.update();
+				JFrame f;
+				f = new JFrame();
+				String keys = JOptionPane.showInputDialog(f, "Enter keys of nodes.\n Example: 0,1,6 ");
 				keys = keys.replaceAll(" ", "");
-				List<Integer> targets = new LinkedList<>();
-				String key = "";
-				for (int i = 0; i < keys.length(); i++) {
-					if (!(keys.charAt(i) == ',')) {
-						key = key + keys.charAt(i);
-					} else {
-						targets.add(Integer.parseInt(key));
-						key = "";
+				try {
+
+					List<Integer> targets = new LinkedList<>();
+					String key = "";
+					for (int i = 0; i < keys.length(); i++) {
+						if (!(keys.charAt(i) == ',')) {
+							key = key + keys.charAt(i);
+						} else {
+							targets.add(Integer.parseInt(key));
+							key = "";
+						}
 					}
-				}
-				targets.add(Integer.parseInt(key));
-				System.out.println(targets);
-				List<node_data> temp = Ggui.TSP(targets);
-				if (temp != null && !temp.isEmpty()) {
-					node_data nodeA = temp.get(0);
-					node_data nodeB = null;
-					for (int i = 1; i < temp.size(); i++) {
-						nodeB = temp.get(i);
-						double x0 = nodeA.getLocation().x();
-						double x1 = nodeB.getLocation().x();
-						double y0 = nodeA.getLocation().y();
-						double y1 = nodeB.getLocation().y();
-						setPenColor(Color.blue);
-						setPenRadius(0.03);
-						text(0.4 * x0 + 0.6 * x1, 0.3 * y0 + 0.7 * y1, i + "");
-						setPenColor(GREEN);
-						setPenRadius(0.01);
-						line(x0, y0, x1, y1);
-						nodeA = nodeB;
+					targets.add(Integer.parseInt(key));
+					try {
+
+						List<node_data> temp = Ggui.TSP(targets);
+						if (temp != null && !temp.isEmpty()) {
+							node_data nodeA = temp.get(0);
+							node_data nodeB = null;
+							for (int i = 1; i < temp.size(); i++) {
+								nodeB = temp.get(i);
+								double x0 = nodeA.getLocation().x();
+								double x1 = nodeB.getLocation().x();
+								double y0 = nodeA.getLocation().y();
+								double y1 = nodeB.getLocation().y();
+								setPenColor(Color.blue);
+								setPenRadius(0.03);
+								text(0.4 * x0 + 0.6 * x1, 0.3 * y0 + 0.7 * y1, i + "");
+								setPenColor(GREEN);
+								setPenRadius(0.01);
+								line(x0, y0, x1, y1);
+								nodeA = nodeB;
+							}
+						}
+					} catch (Exception e2){
+						JOptionPane.showMessageDialog(f,"Something WRONG! PLS TRY AGAIN. Try to read the instructions");
 					}
+				}catch (Exception e1){
+					JOptionPane.showMessageDialog(f,"Integers Only, with a comma between each");
+
 				}
-			} else if ((e.getActionCommand().equals("save"))) {
+			}
+			else if ((e.getActionCommand().equals("save"))) {
 				FileDialog chooser = new FileDialog(StdDraw.frame, "save the graph", FileDialog.SAVE);
 				chooser.setVisible(true);
 				String filename = chooser.getFile();
 				if (filename != null) {
 					StdDraw.save(chooser.getDirectory() + File.separator + chooser.getFile());
 				}
-			} else if ((e.getActionCommand().equals("load"))) {
+			}
+			else if ((e.getActionCommand().equals("load"))) {
 				FileDialog chooser = new FileDialog(StdDraw.frame, "load the graph", FileDialog.LOAD);
 				chooser.setVisible(true);
-				String filename = chooser.getDirectory() + chooser.getFile();
-				if (filename != null)
-					System.out.println(filename);
-				{
-					Ggui.initGraph(filename);
-					Ggui.update();
+				try {
+					String filename = chooser.getDirectory() + chooser.getFile();
+					if (!chooser.getFile().equals( "null"))
+						System.out.println(filename);
+					{
+						Ggui.initGraph(filename);
+						Ggui.update();
+					}
+				} catch (Exception e1){
+					JFrame f;
+					f = new JFrame();
+					JOptionPane.showMessageDialog(f,"Can't Load! Pls TRY AGAIN.");
 				}
 			}
 
