@@ -1819,7 +1819,7 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 							node_data nodeA = temp.get(0);
 							node_data nodeB = null;
 							setPenColor(GREEN);
-							setPenRadius(0.01);
+							StdDraw.setPenRadius(0.005);
 							for (int i = 1; i < temp.size(); i++) {
 								nodeB = temp.get(i);
 								line(nodeA.getLocation().x(), nodeA.getLocation().y(), nodeB.getLocation().x(), nodeB.getLocation().y());
@@ -1838,9 +1838,9 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 				JFrame f;
 				f = new JFrame();
 				String keys = JOptionPane.showInputDialog(f, "Enter keys of nodes.\n Example: 0,1,6 ");
-				keys = keys.replaceAll(" ", "");
 				try {
 
+					keys = keys.replaceAll(" ", "");
 					List<Integer> targets = new LinkedList<>();
 					String key = "";
 					for (int i = 0; i < keys.length(); i++) {
@@ -1868,7 +1868,8 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 								setPenRadius(0.03);
 								text(0.4 * x0 + 0.6 * x1, 0.3 * y0 + 0.7 * y1, i + "");
 								setPenColor(GREEN);
-								setPenRadius(0.01);
+								StdDraw.setPenRadius(0.005);
+
 								line(x0, y0, x1, y1);
 								nodeA = nodeB;
 							}

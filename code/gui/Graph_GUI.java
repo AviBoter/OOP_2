@@ -9,6 +9,7 @@ import utils.StdDraw;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.*;
 import java.util.List;
 
@@ -120,10 +121,11 @@ public class Graph_GUI implements Serializable {
                     double y0 = n.getLocation().y();
                     double y1 = dGraph.getNode(edge.getDest()).getLocation().y();
                     double x1 = dGraph.getNode(edge.getDest()).getLocation().x();
+                    StdDraw.setPenRadius(0.003);
 
                     StdDraw.line(x0, y0, x1, y1);
                     StdDraw.setPenColor(Color.RED);
-                    StdDraw.text(0.5 * x0 + 0.5 * x1, 0.5 * y0 + 0.5 * y1,edge.getWeight()+"");
+                    StdDraw.text(0.3 * x0 + 0.7 * x1, 0.3 * y0 + 0.7 * y1,edge.getWeight()+"");
                     StdDraw.setPenRadius(0.03);
                     StdDraw.setPenColor(StdDraw.RED);
                     StdDraw.point(0.1 * x0 + 0.9 * x1, 0.1 * y0 + 0.9 * y1);
@@ -182,8 +184,36 @@ public class Graph_GUI implements Serializable {
 
     public static void main(String[] args){
         Graph_GUI test = new Graph_GUI();
-
-
+//        for (int i = 0; i<1000;i++){
+//            Point3D tP = new Point3D(10,i);
+//            test.addPoint(tP);
+//
+//        }
+//        for (int i=0;i<999;i++){
+//            test.addE(i,i+1,i*10+100);
+//        }
+//        test.addE(999,0,1000);
+//
+//        for (int i = 0;i<10000;i++){
+//            int r = (int)(Math.random()*999);
+//            int r2 = (int)(Math.random()*999);
+//            if (r!= r2) {
+//                test.addE(r, r2, r + i);
+//            }
+//        }
+//        List<Integer> tar = new LinkedList<>();
+//        for (int i = 0;i<1000;i++){
+//            int r = (int)(Math.random()*3);
+//            if (r==2){
+//                tar.add(i);
+//            }
+//        }
+//        System.out.println(tar.size());
+//        Date date = new Date();
+//        List t =test.TSP(tar);
+//        double f = date.getTime();
+//        System.out.println(f);
+//        System.out.println(t.size());
 
 
     }
