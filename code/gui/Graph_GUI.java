@@ -60,8 +60,6 @@ public class Graph_GUI implements Serializable {
                 press = false;
 
             }
-
-
         }
     }
     public  int _id = 0;
@@ -122,7 +120,6 @@ public class Graph_GUI implements Serializable {
                     double y1 = dGraph.getNode(edge.getDest()).getLocation().y();
                     double x1 = dGraph.getNode(edge.getDest()).getLocation().x();
                     StdDraw.setPenRadius(0.003);
-
                     StdDraw.line(x0, y0, x1, y1);
                     StdDraw.setPenColor(Color.RED);
                     StdDraw.text(0.3 * x0 + 0.7 * x1, 0.3 * y0 + 0.7 * y1,edge.getWeight()+"");
@@ -210,14 +207,72 @@ public class Graph_GUI implements Serializable {
 //        }
 //        System.out.println(tar.size());
 //        Date date = new Date();
+//        double ff = date.getTime();
 //        List t =test.TSP(tar);
+//        date = new Date();
 //        double f = date.getTime();
-//        System.out.println(f);
+//        System.out.println(f-ff);
 //        System.out.println(t.size());
+        Point3D p1 = new Point3D(-10,40);
+        Point3D p3 = new Point3D(-50,30);
+        Point3D p2 = new Point3D(0,-20);
+        Point3D p4 = new Point3D(40,7);
+
+
+        NodeData n1 = new NodeData(p1);
+        NodeData n2 = new NodeData(p2);
+        NodeData n3 = new NodeData(p3);
+        NodeData n4 = new NodeData(p4);
+
+        NodeData n5 = new NodeData(new Point3D(30,40));
+        NodeData n6 = new NodeData(new Point3D(80,-10));
+        NodeData n7 = new NodeData(new Point3D(70,50));
+        NodeData n8 = new NodeData(new Point3D(90,90));
+
+        NodeData n9 = new NodeData(new Point3D(0,90));
+
+
+        test.addNode(n1);
+        test.addNode(n2);
+        test.addNode(n3);
+        test.addNode(n4);
+        test.addNode(n5);
+        test.addNode(n6);
+        test.addNode(n7);
+        test.addNode(n8);
+        test.addNode(n9);
+
+        test.addE(n1.getKey(), n2.getKey(),1);
+        test.addE(n1.getKey(), n3.getKey(),4);
+        test.addE(n1.getKey(), n4.getKey(),9);
+        test.addE(n2.getKey(), n1.getKey(),1);
+        test.addE(n2.getKey(), n4.getKey(),2);
+        test.addE(n3.getKey(), n2.getKey(),1);
+        test.addE(n3.getKey(), n4.getKey(),3);
+        test.addE(n4.getKey(), n3.getKey(),10);
+
+        test.addE(n5.getKey(), n6.getKey(),1);
+        test.addE(n5.getKey(), n7.getKey(),2);
+        test.addE(n5.getKey(), n8.getKey(),3);
+        test.addE(n6.getKey(), n5.getKey(),1);
+        test.addE(n6.getKey(), n8.getKey(),5);
+        test.addE(n7.getKey(), n6.getKey(),6);
+        test.addE(n7.getKey(), n8.getKey(),7);
+        test.addE(n8.getKey(), n7.getKey(),9);
+
+        test.addE(n1.getKey(),n9.getKey(),10);
+        test.addE(n9.getKey(),n1.getKey(),1);
+        test.addE(n5.getKey(),n9.getKey(),1);
+        test.addE(n9.getKey(),n5.getKey(),1);
+        test.update();
+        System.out.println(test.shortestPath(1,7));
 
 
     }
 
+    private void addNode(NodeData n1) {
+        dGraph.addNode(n1);
+    }
 
 
 }

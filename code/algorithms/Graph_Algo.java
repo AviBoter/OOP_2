@@ -101,11 +101,137 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 		}
 		return true;
 	}
-
+//	@Override
+//	public double shortestPathDist(int src, int dest) {
+//		Queue<Edata> PQdist = new LinkedList<Edata>();
+//		Queue<Edata> PQnode = new LinkedList<Edata>();
+//		HashMap<Integer,Double> dist=new HashMap<Integer,Double>(_G.nodeSize());
+//		NodeData Runner=(NodeData)_G.getNode(src);
+//		Edata CurNode = null;
+//		Edata CurNode2 = null;
+//
+//		dist.put(src,(double)0);
+//		int i=0,count=0;
+//
+//		while(i<=_G.nodeSize()) {
+//			Collection<edge_data> Col=new ArrayList<edge_data>(_G.getE(Runner.getKey()));
+//			Collection<edge_data> Col2=new ArrayList<edge_data>(_G.getE(Runner.getKey()));
+//			AddEdgesToPriorityQueue(PQdist,Col);
+//			if(i<=_G.nodeSize()) {
+//				AddEdgesToPriorityQueue(PQnode,Col2);
+//			}
+//			count=PQnode.size();
+//			while(count!=0) {
+//				count--;
+//				CurNode2=(Edata)PQnode.poll();
+//				if(CurNode2!=null) {
+//					Runner=(NodeData)_G.getNode(CurNode2.getDest());
+//					if(!PQnode.isEmpty()) {
+//						Collection<edge_data> Col3=new ArrayList<edge_data>(_G.getE(Runner.getKey()));
+//						AddEdgesToPriorityQueue(PQdist,Col3);
+//					}
+//				}
+//				while(!PQdist.isEmpty()) {
+//					CurNode=PQdist.poll();
+//					if(!dist.containsKey(CurNode.getDest()) || dist.get(CurNode.getDest()).doubleValue()>dist.get(CurNode.getSrc()).doubleValue()+CurNode.getWeight()) {
+//						dist.put(CurNode.getDest(),dist.get(CurNode.getSrc())+CurNode.getWeight());
+//					}
+//				}
+//				if(count!=0) {
+//					i++;
+//				}
+//			}
+//			i++;
+//		}
+//		return dist.get(dest).doubleValue();
+//	}
+//
+//	private void AddEdgesToPriorityQueue(Queue<Edata> Pqueue,Collection<edge_data> Col) {
+//		PriorityQueue<edge_data> minHeap = new PriorityQueue<edge_data>(new Comparator<edge_data>() {
+//			@Override
+//			public int compare(edge_data o1, edge_data o2) {
+//				return - Double.compare(o2.getWeight(),o1.getWeight());
+//			}
+//		});
+//		Object[] temp=Col.toArray();
+//		int i=0;
+//		while(i<temp.length) {
+//			minHeap.add((edge_data)temp[i]);
+//			i++;
+//		}
+//		while(minHeap.iterator().hasNext()) {
+//			Pqueue.add((Edata)minHeap.poll());
+//		}
+//	}
+//
+//	@Override
+//	public List<node_data> shortestPath(int src, int dest) {
+//		Queue<Edata> PQdist = new LinkedList<Edata>();
+//		Queue<Edata> PQnode = new LinkedList<Edata>();
+//		HashMap<Integer,Double> dist=new HashMap<Integer,Double>(_G.nodeSize());
+//		HashMap<Integer,ArrayList<Integer>> Paths=new HashMap<Integer,ArrayList<Integer>>(_G.nodeSize());
+//		NodeData Runner=(NodeData)_G.getNode(src);
+//		Edata CurNode = null;
+//		Edata CurNode2 = null;
+//
+//		dist.put(src,(double)0);
+//		Paths.put(src, new ArrayList<Integer>());
+//		Paths.get(src).add(src);
+//		int i=0,count=0;
+//
+//		while(i<=_G.nodeSize()+1) {
+//			Collection<edge_data> Col=new ArrayList<edge_data>(_G.getE(Runner.getKey()));
+//			Collection<edge_data> Col2=new ArrayList<edge_data>(_G.getE(Runner.getKey()));
+//			AddEdgesToPriorityQueue(PQdist,Col);
+//			if(i<=_G.nodeSize()) {
+//				AddEdgesToPriorityQueue(PQnode,Col2);
+//			}
+//			count=PQnode.size();
+//			while(count!=0) {
+//				count--;
+//				CurNode2=(Edata)PQnode.poll();
+//				if(CurNode2!=null) {
+//					Runner=(NodeData)_G.getNode(CurNode2.getDest());
+//					if(!PQnode.isEmpty()) {
+//						Collection<edge_data> Col3=new ArrayList<edge_data>(_G.getE(Runner.getKey()));
+//						AddEdgesToPriorityQueue(PQdist,Col3);
+//					}
+//				}
+//				while(!PQdist.isEmpty()) {
+//					CurNode=PQdist.poll();
+//					if(!dist.containsKey(CurNode.getDest()) || (dist.containsKey(CurNode.getDest()) && dist.get(CurNode.getDest())>dist.get(CurNode.getSrc())+CurNode.getWeight())) {
+//						Paths.put(CurNode.getDest(), new ArrayList<Integer>());
+//						dist.put(CurNode.getDest(),dist.get(CurNode.getSrc())+CurNode.getWeight());
+//						int k=0;
+//						while(k<Paths.get(CurNode.getSrc()).size()) {
+//							Paths.get(CurNode.getDest()).add(Paths.get(CurNode.getSrc()).get(k));
+//							k++;
+//						}
+//						Paths.get(CurNode.getDest()).add(CurNode.getDest());
+//					}
+//				}
+//				if(count!=0) {
+//					i++;
+//				}
+//			}
+//			i++;
+//		}
+//		List<node_data> Ans=new LinkedList<node_data>();
+//		int j=0;
+//		while(j<Paths.get(dest).size()) {
+//			Ans.add(_G.getNode(Paths.get(dest).get(j)));
+//			System.out.println(Paths.get(dest).get(j));
+//			j++;
+//		}
+//		return Ans;
+//	}
 
 	/**
-	 * xxc
+	 *
+	 *
+	 * @return
 	 */
+
 
 	@Override
 	public double shortestPathDist(int src, int dest) {
@@ -232,18 +358,54 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 
 	@Override
 	public List<node_data> TSP(List<Integer> targets) {
+		if (targets == null || targets.isEmpty()) return null;
 		int i = 0;
 		List<node_data> ans = new LinkedList<node_data>();
-		while (i < targets.size() - 1) {
-			ans.addAll(shortestPath(targets.get(i), targets.get(i + 1)));
-			i++;
+
+		HashMap<Integer,Boolean> hashMap = new LinkedHashMap<>();
+		while (i<targets.size()){
+			if(!hashMap.containsKey(targets.get(i))){
+				hashMap.put(targets.get(i),true);
+				i++;
+
+			}
+			else {
+				targets.remove(i);
+			}
 		}
+		i=0;
+//		while (i < targets.size() - 1) {
+//			ans.addAll(shortestPath(targets.get(i), targets.get(i + 1)));
+//			i++;
+//		}
+		int temp = 0;
+		int temp2;
+		List<node_data> tempN;
+		if (!targets.isEmpty()) {
+			temp = targets.remove(0);
+		}
+		while (!targets.isEmpty()){
+			temp2 = targets.remove(0);
+			tempN = shortestPath(temp,temp2);
+			for (node_data nk: tempN){
+				if (targets.contains(nk.getKey())){
+					targets.remove((Integer)nk.getKey());
+				}
+			}
+			ans.addAll(tempN);
+			temp = temp2;
+		}
+
 		i = 0;
 		while (i < ans.size() - 1) {
 			if (ans.get(i).equals(ans.get(i + 1)))
 				ans.remove(i);
 			else
 				i++;
+		}
+		System.out.println( );
+		for(node_data n:ans){
+			System.out.print(" "+(n.getKey()+1));
 		}
 		return ans;
 	}
