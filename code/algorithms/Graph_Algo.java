@@ -55,6 +55,7 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 
 	@Override
 	public boolean isConnected() {
+		if (myGraph.edgeSize()==0) return true;
 		Collection<node_data> temp = myGraph.getV();
 		Iterator<node_data> nodeIter = temp.iterator();
 		while (nodeIter.hasNext()) {

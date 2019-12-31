@@ -36,6 +36,7 @@ public class DGraph implements graph, Serializable {
 
 			}
 		}
+		EdgeZise = g.edgeSize();
 
     }
 
