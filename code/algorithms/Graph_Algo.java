@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.*;
 
 import dataStructure.*;
-import gui.Graph_GUI;
 
 /**
  * This empty class represents the set of graph-theory algorithms
@@ -13,11 +12,18 @@ import gui.Graph_GUI;
  *
  */
 public class Graph_Algo implements graph_algorithms, Serializable {
-	public graph _G = new DGraph();
+	public graph myGraph = new DGraph();
+
+	public Graph_Algo(graph graph) {
+		myGraph = graph;
+	}
+	public Graph_Algo() {
+	}
+
 
 	@Override
 	public void init(graph g) {
-		_G = g;
+		myGraph = g;
 	}
 
 	@Override
@@ -38,7 +44,7 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 		try {
 			FileOutputStream file = new FileOutputStream(file_name);
 			ObjectOutputStream objectOutputStream = new ObjectOutputStream(file);
-			objectOutputStream.writeObject(this._G);
+			objectOutputStream.writeObject(this.myGraph);
 			objectOutputStream.close();
 			file.close();
 		} catch (IOException e) {
@@ -49,7 +55,7 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 
 	@Override
 	public boolean isConnected() {
-		Collection<node_data> temp = _G.getV();
+		Collection<node_data> temp = myGraph.getV();
 		Iterator<node_data> nodeIter = temp.iterator();
 		while (nodeIter.hasNext()) {
 			nodeIter.next().setTag(-1);
@@ -58,7 +64,7 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 		Queue<node_data> myQue = new LinkedList<>();
 		Queue<node_data> finish = new LinkedList<>();
 		node_data current;
-		nodeIter = _G.getV().iterator();
+		nodeIter = myGraph.getV().iterator();
 		if (nodeIter.hasNext()) {
 			current = nodeIter.next();
 		} else {
@@ -70,13 +76,13 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 		for (; FLAG; k++) {
 			while (FLAG) {
 				FLAG = false;
-				if (_G.getE(current.getKey()) == null) return false;
-				List<edge_data> list = new LinkedList<>(_G.getE(current.getKey()));
+				if (myGraph.getE(current.getKey()) == null) return false;
+				List<edge_data> list = new LinkedList<>(myGraph.getE(current.getKey()));
 				if (list.isEmpty()) return false;
 				for (edge_data i : list) {
-					if (_G.getNode(i.getDest()).getTag() != k) {
-						_G.getNode(i.getDest()).setTag(k);
-						myQue.add(_G.getNode(i.getDest()));
+					if (myGraph.getNode(i.getDest()).getTag() != k) {
+						myGraph.getNode(i.getDest()).setTag(k);
+						myQue.add(myGraph.getNode(i.getDest()));
 					} else if (!second) {
 						finish.add(current);
 					}
@@ -105,19 +111,19 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 //	public double shortestPathDist(int src, int dest) {
 //		Queue<Edata> PQdist = new LinkedList<Edata>();
 //		Queue<Edata> PQnode = new LinkedList<Edata>();
-//		HashMap<Integer,Double> dist=new HashMap<Integer,Double>(_G.nodeSize());
-//		NodeData Runner=(NodeData)_G.getNode(src);
+//		HashMap<Integer,Double> dist=new HashMap<Integer,Double>(myGraph.nodeSize());
+//		NodeData Runner=(NodeData)myGraph.getNode(src);
 //		Edata CurNode = null;
 //		Edata CurNode2 = null;
 //
 //		dist.put(src,(double)0);
 //		int i=0,count=0;
 //
-//		while(i<=_G.nodeSize()) {
-//			Collection<edge_data> Col=new ArrayList<edge_data>(_G.getE(Runner.getKey()));
-//			Collection<edge_data> Col2=new ArrayList<edge_data>(_G.getE(Runner.getKey()));
+//		while(i<=myGraph.nodeSize()) {
+//			Collection<edge_data> Col=new ArrayList<edge_data>(myGraph.getE(Runner.getKey()));
+//			Collection<edge_data> Col2=new ArrayList<edge_data>(myGraph.getE(Runner.getKey()));
 //			AddEdgesToPriorityQueue(PQdist,Col);
-//			if(i<=_G.nodeSize()) {
+//			if(i<=myGraph.nodeSize()) {
 //				AddEdgesToPriorityQueue(PQnode,Col2);
 //			}
 //			count=PQnode.size();
@@ -125,9 +131,9 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 //				count--;
 //				CurNode2=(Edata)PQnode.poll();
 //				if(CurNode2!=null) {
-//					Runner=(NodeData)_G.getNode(CurNode2.getDest());
+//					Runner=(NodeData)myGraph.getNode(CurNode2.getDest());
 //					if(!PQnode.isEmpty()) {
-//						Collection<edge_data> Col3=new ArrayList<edge_data>(_G.getE(Runner.getKey()));
+//						Collection<edge_data> Col3=new ArrayList<edge_data>(myGraph.getE(Runner.getKey()));
 //						AddEdgesToPriorityQueue(PQdist,Col3);
 //					}
 //				}
@@ -168,9 +174,9 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 //	public List<node_data> shortestPath(int src, int dest) {
 //		Queue<Edata> PQdist = new LinkedList<Edata>();
 //		Queue<Edata> PQnode = new LinkedList<Edata>();
-//		HashMap<Integer,Double> dist=new HashMap<Integer,Double>(_G.nodeSize());
-//		HashMap<Integer,ArrayList<Integer>> Paths=new HashMap<Integer,ArrayList<Integer>>(_G.nodeSize());
-//		NodeData Runner=(NodeData)_G.getNode(src);
+//		HashMap<Integer,Double> dist=new HashMap<Integer,Double>(myGraph.nodeSize());
+//		HashMap<Integer,ArrayList<Integer>> Paths=new HashMap<Integer,ArrayList<Integer>>(myGraph.nodeSize());
+//		NodeData Runner=(NodeData)myGraph.getNode(src);
 //		Edata CurNode = null;
 //		Edata CurNode2 = null;
 //
@@ -179,11 +185,11 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 //		Paths.get(src).add(src);
 //		int i=0,count=0;
 //
-//		while(i<=_G.nodeSize()+1) {
-//			Collection<edge_data> Col=new ArrayList<edge_data>(_G.getE(Runner.getKey()));
-//			Collection<edge_data> Col2=new ArrayList<edge_data>(_G.getE(Runner.getKey()));
+//		while(i<=myGraph.nodeSize()+1) {
+//			Collection<edge_data> Col=new ArrayList<edge_data>(myGraph.getE(Runner.getKey()));
+//			Collection<edge_data> Col2=new ArrayList<edge_data>(myGraph.getE(Runner.getKey()));
 //			AddEdgesToPriorityQueue(PQdist,Col);
-//			if(i<=_G.nodeSize()) {
+//			if(i<=myGraph.nodeSize()) {
 //				AddEdgesToPriorityQueue(PQnode,Col2);
 //			}
 //			count=PQnode.size();
@@ -191,9 +197,9 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 //				count--;
 //				CurNode2=(Edata)PQnode.poll();
 //				if(CurNode2!=null) {
-//					Runner=(NodeData)_G.getNode(CurNode2.getDest());
+//					Runner=(NodeData)myGraph.getNode(CurNode2.getDest());
 //					if(!PQnode.isEmpty()) {
-//						Collection<edge_data> Col3=new ArrayList<edge_data>(_G.getE(Runner.getKey()));
+//						Collection<edge_data> Col3=new ArrayList<edge_data>(myGraph.getE(Runner.getKey()));
 //						AddEdgesToPriorityQueue(PQdist,Col3);
 //					}
 //				}
@@ -219,7 +225,7 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 //		List<node_data> Ans=new LinkedList<node_data>();
 //		int j=0;
 //		while(j<Paths.get(dest).size()) {
-//			Ans.add(_G.getNode(Paths.get(dest).get(j)));
+//			Ans.add(myGraph.getNode(Paths.get(dest).get(j)));
 //			System.out.println(Paths.get(dest).get(j));
 //			j++;
 //		}
@@ -235,7 +241,7 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 
 	@Override
 	public double shortestPathDist(int src, int dest) {
-		if (_G.getNode(src) == null || _G.getNode(dest) == null)
+		if (myGraph.getNode(src) == null || myGraph.getNode(dest) == null)
 			throw new RuntimeException("src or dst dose not exist");
 		if (src == dest) return 0;
 		HashMap<Integer, Double> myBoard = new LinkedHashMap<>();
@@ -249,9 +255,9 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 			if (current == dest) {
 				desH = true;
 			} else desH = false;
-			if (_G.getE(current) != null) {
+			if (myGraph.getE(current) != null) {
 
-				ArrayList<edge_data> myEData = new ArrayList<>(_G.getE(current));
+				ArrayList<edge_data> myEData = new ArrayList<>(myGraph.getE(current));
 				boolean flag = true;
 				while (!desH && flag) {
 					int minIndex = minInArray(myEData);
@@ -297,11 +303,11 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 
 	@Override
 	public List<node_data> shortestPath(int src, int dest) {
-		if (_G.getNode(src) == null || _G.getNode(dest) == null)
+		if (myGraph.getNode(src) == null || myGraph.getNode(dest) == null)
 			throw new RuntimeException("src or dst dose not exist");
 		if (src == dest) {
 			List<node_data> t = new LinkedList<>();
-			t.add(_G.getNode(src));
+			t.add(myGraph.getNode(src));
 			return t;
 		}
 		HashMap<Integer, Double> myBoard = new LinkedHashMap<>();
@@ -312,15 +318,15 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 		myQueue.add(src);
 		myBoard.put(src, 0.0);
 		LinkedList<node_data> temp = new LinkedList<>();
-		temp.add(_G.getNode(src));
+		temp.add(myGraph.getNode(src));
 		myBoardList.put(src, temp);
 		while (!myQueue.isEmpty()) {
 			current = myQueue.poll();
 			if (current == dest) {
 				desH = true;
 			} else desH = false;
-			if (_G.getE(current) != null) {
-				ArrayList<edge_data> myEData = new ArrayList<>(_G.getE(current));
+			if (myGraph.getE(current) != null) {
+				ArrayList<edge_data> myEData = new ArrayList<>(myGraph.getE(current));
 				boolean flag = true;
 				while (!desH && flag) {
 					int minIndex = minInArray(myEData);
@@ -342,13 +348,13 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 		double amount = myedge.getWeight() + board.get(src);
 		if (!board.containsKey(dest)) {
 			LinkedList<node_data> tempList = new LinkedList<>(list);
-			tempList.add(_G.getNode(dest));
+			tempList.add(myGraph.getNode(dest));
 			board.put(dest, amount);
 			map.put(dest, tempList);
 		} else {
 			if (board.get(dest) > amount) {
 				LinkedList<node_data> tempList = new LinkedList<>(list);
-				tempList.add(_G.getNode(dest));
+				tempList.add(myGraph.getNode(dest));
 				board.put(dest, amount);
 				map.put(dest, tempList);
 			} else return false;
@@ -416,7 +422,7 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 //		if (targets == null || targets.isEmpty()) return null;
 //		List<node_data> myNodeList = new LinkedList<>();
 //		for (Integer i:targets){
-//			myNodeList.add(_G.getNode(i));
+//			myNodeList.add(myGraph.getNode(i));
 //		}
 //
 //		HashMap<Integer, List<node_data>> myBoardList = new LinkedHashMap<>();
@@ -477,7 +483,7 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 }// worse TSP run time ever
 	@Override
 	public graph copy() {
-		return new DGraph(_G);//
+		return new DGraph(myGraph);//
 	}
 
 }

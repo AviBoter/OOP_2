@@ -6,8 +6,8 @@ import java.util.*;
 public class DGraph implements graph, Serializable {
 	private HashMap<Integer,node_data> NMap = new LinkedHashMap<>();
 	private HashMap<Integer,HashMap<Integer,edge_data>> EMap = new LinkedHashMap<>();
-	private int _EdgeZise = 0;
-	private int _MC=0;
+	private int EdgeZise = 0;
+	private int myMc=0;
 
 	public DGraph(){
     }
@@ -60,7 +60,7 @@ public class DGraph implements graph, Serializable {
 			NMap.put(n.getKey(), n);
 			HashMap<Integer,edge_data> temp = new LinkedHashMap<>();
 			EMap.put(n.getKey(),temp);
-			_MC++;
+			myMc++;
 		}
 	}
 
@@ -76,8 +76,8 @@ public class DGraph implements graph, Serializable {
 			temp.put(dest,edata);
 			EMap.put(src,temp);
 		}
-		_EdgeZise++;
-		_MC++;
+		EdgeZise++;
+		myMc++;
 		
 	}
 
@@ -100,7 +100,7 @@ public class DGraph implements graph, Serializable {
 	@Override
 	public node_data removeNode(int key) {
 		if (NMap.containsKey(key)){
-			_MC++;
+			myMc++;
 			for (int i =0; i<NMap.size();i++){
 				if (NMap.containsKey(i)){
 					removeEdge(i,key);
@@ -117,12 +117,12 @@ public class DGraph implements graph, Serializable {
 		if (!(NMap.containsKey(src)&&NMap.containsKey(dest))){
 			return null;
 		}
-		_MC++;
+		myMc++;
 		if (EMap.containsKey(src)) {
 			edge_data temp = EMap.get(src).remove(dest);
 
 			if (temp != null) {
-				_EdgeZise--;
+				EdgeZise--;
 			}
 			return temp;
 		}
@@ -136,12 +136,12 @@ public class DGraph implements graph, Serializable {
 
 	@Override
 	public int edgeSize() {
-		return _EdgeZise;
+		return EdgeZise;
 	}
 
 	@Override
 	public int getMC() {
-		return _MC;
+		return myMc;
 	}
 
 

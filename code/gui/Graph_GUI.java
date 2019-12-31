@@ -171,7 +171,7 @@ public class Graph_GUI implements Serializable {
     }
     public void initGraph(String filename){
         graphAlgo.init(filename);
-        dGraph=new DGraph( graphAlgo._G);
+        dGraph=new DGraph( graphAlgo.myGraph);
 
     }
     public List<node_data> TSP(List<Integer> targets){
