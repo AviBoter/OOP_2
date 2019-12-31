@@ -230,6 +230,7 @@ public class Graph_GUI implements Serializable {
         NodeData n8 = new NodeData(new Point3D(90,90));
 
         NodeData n9 = new NodeData(new Point3D(0,90));
+        NodeData n10 = new NodeData(new Point3D(4,30));
 
 
         test.addNode(n1);
@@ -241,6 +242,7 @@ public class Graph_GUI implements Serializable {
         test.addNode(n7);
         test.addNode(n8);
         test.addNode(n9);
+        test.addNode(n10);
 
         test.addE(n1.getKey(), n2.getKey(),1);
         test.addE(n1.getKey(), n3.getKey(),4);
@@ -265,7 +267,14 @@ public class Graph_GUI implements Serializable {
         test.addE(n5.getKey(),n9.getKey(),1);
         test.addE(n9.getKey(),n5.getKey(),1);
         test.update();
-        System.out.println(test.shortestPath(1,7));
+        List<Integer> twp =new LinkedList<>();
+        twp.add(3);
+        twp.add(2);
+        twp.add(1);
+        twp.add(4);
+        twp.add(6);
+        twp.add(9);
+        System.out.println(test.TSP(twp));
 
 
     }

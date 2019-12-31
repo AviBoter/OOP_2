@@ -387,6 +387,7 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 		while (!targets.isEmpty()){
 			temp2 = targets.remove(0);
 			tempN = shortestPath(temp,temp2);
+			if(tempN == null) return null;
 			for (node_data nk: tempN){
 				if (targets.contains(nk.getKey())){
 					targets.remove((Integer)nk.getKey());
@@ -403,10 +404,10 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 			else
 				i++;
 		}
-		System.out.println( );
-		for(node_data n:ans){
-			System.out.print(" "+(n.getKey()+1));
-		}
+		//System.out.println( );
+		//for(node_data n:ans){
+			//System.out.print(" "+(n.getKey()+1));
+		//}
 		return ans;
 	}
 	{
