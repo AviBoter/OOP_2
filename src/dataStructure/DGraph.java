@@ -9,8 +9,14 @@ public class DGraph implements graph, Serializable {
 	private int EdgeZise = 0;
 	private int myMc=0;
 
+	/**
+	 * default contractor
+	 */
 	public DGraph(){
     }
+	/**
+	 * copy contractor
+	 */
 	public DGraph(graph g){
         Collection<node_data> tempV = g.getV();
 
@@ -40,6 +46,11 @@ public class DGraph implements graph, Serializable {
 
     }
 
+	/**
+	 *
+	 * @param key - the node_id.
+	 * @return node in node_data.
+	 */
 	@Override
 	public node_data getNode(int key) {
 		if (NMap.containsKey(key))
@@ -47,6 +58,12 @@ public class DGraph implements graph, Serializable {
 		return null;
 	}
 
+	/**
+	 *
+	 * @param src - the source of the edge.
+	 * @param dest - the destination of the edge.
+	 * @return edge from src to dest in edge_data.
+	 */
 	@Override
 	public edge_data getEdge(int src, int dest) {
 		if (EMap.containsKey(src))
@@ -55,6 +72,10 @@ public class DGraph implements graph, Serializable {
 		return null;
 	}
 
+	/**
+	 * add node to the graph
+	 * @param n
+	 */
 	@Override
 	public void addNode(node_data n) {
 		if (!NMap.containsKey(n.getKey())) {
@@ -65,6 +86,12 @@ public class DGraph implements graph, Serializable {
 		}
 	}
 
+	/**
+	 * Connect an edge with weight w between node src to node dest.
+	 * @param src - the source of the edge.
+	 * @param dest - the destination of the edge.
+	 * @param w - positive weight representing the cost (aka time, price, etc) between src-->dest.
+	 */
 	@Override
 	public void connect(int src, int dest, double w) {
 		if (!(NMap.containsKey(dest)&&NMap.containsKey(src)))
@@ -82,11 +109,20 @@ public class DGraph implements graph, Serializable {
 		
 	}
 
+	/**
+	 *
+	 * @return all nodes in collection
+	 */
 	@Override
 	public Collection<node_data> getV() {
 		return NMap.values();
 	}
 
+	/**
+	 *
+	 * @param node_id
+	 * @return All the edge that come from this node (out) in collection
+	 */
 	@Override
 	public Collection<edge_data> getE(int node_id) {
 		if (!NMap.containsKey(node_id)) {
@@ -98,6 +134,11 @@ public class DGraph implements graph, Serializable {
 		return EMap.get(node_id).values();
 	}
 
+	/**
+	 * remove node in the graph and all the edge that associate to this node
+	 * @param key
+	 * @return the node that removed
+	 */
 	@Override
 	public node_data removeNode(int key) {
 		if (NMap.containsKey(key)){
@@ -113,6 +154,12 @@ public class DGraph implements graph, Serializable {
 
 	}
 
+	/**
+	 *
+	 * @param src - src of this edge
+	 * @param dest - dest of this node
+	 * @return edge that removed
+	 */
 	@Override
 	public edge_data removeEdge(int src, int dest) {
 		if (!(NMap.containsKey(src)&&NMap.containsKey(dest))){
@@ -130,16 +177,27 @@ public class DGraph implements graph, Serializable {
 		return null;
 	}
 
+	/**
+	 *
+	 * @return amount of the node in the graph
+	 */
 	@Override
 	public int nodeSize() {
 		return NMap.size();
 	}
-
+	/**
+	 *
+	 * @return amount of the edge in the graph
+	 */
 	@Override
 	public int edgeSize() {
 		return EdgeZise;
 	}
 
+	/**
+	 * the mode change every time when the graph changed.
+	 * @return Mode Count
+	 */
 	@Override
 	public int getMC() {
 		return myMc;

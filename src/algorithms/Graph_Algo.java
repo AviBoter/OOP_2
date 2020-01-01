@@ -14,18 +14,29 @@ import dataStructure.*;
 public class Graph_Algo implements graph_algorithms, Serializable {
 	public graph myGraph = new DGraph();
 
+	/**
+	 * init
+	 * @param graph - the graph for the algorithms.
+	 */
 	public Graph_Algo(graph graph) {
 		myGraph = graph;
 	}
 	public Graph_Algo() {
 	}
 
-
+	/**
+	 * init
+	 * @param g - the graph for the algorithms.
+	 */
 	@Override
 	public void init(graph g) {
 		myGraph = g;
 	}
 
+	/**
+	 * init from file
+	 * @param file_name - include path to the file
+	 */
 	@Override
 	public void init(String file_name) {
 		try {
@@ -39,6 +50,10 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 
 	}
 
+	/**
+	 * save to file
+	 * @param file_name - the file name that will be save in
+	 */
 	@Override
 	public void save(String file_name) {
 		try {
@@ -53,6 +68,11 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 
 	}
 
+	/**
+	 * Returns true if and only if (iff) there is a valid path from EVREY node to each
+	 * other node. NOTE: assume directional graph - a valid path (a-->b) does NOT imply a valid path (b-->a).
+	 * @return true if the graph is connected and not if not
+	 */
 	@Override
 	public boolean isConnected() {
 		if (myGraph.edgeSize()==0) return true;
@@ -234,11 +254,11 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 //	}
 
 	/**
-	 *
-	 *
-	 * @return
+	 * returns the length of the shortest path between src to dest
+	 * @param src - start node
+	 * @param dest - end (target) node
+	 * @return Distance of the src to dest in double
 	 */
-
 
 	@Override
 	public double shortestPathDist(int src, int dest) {
@@ -301,7 +321,14 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 		}
 		return -1;
 	}
-
+/**
+ * returns the the shortest path between src to dest - as an ordered List of nodes:
+ * src--> n1-->n2-->...dest
+ * see: https://en.wikipedia.org/wiki/Shortest_path_problem
+ * @param src - start node
+ * @param dest - end (target) node
+ * @return the path of the way in list of node_data
+ */
 	@Override
 	public List<node_data> shortestPath(int src, int dest) {
 		if (myGraph.getNode(src) == null || myGraph.getNode(dest) == null)
@@ -362,7 +389,14 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 		}
 		return true;
 	}
-
+	/**
+	 * computes a relatively short path which visit each node in the targets List.
+	 * Note: this is NOT the classical traveling salesman problem,
+	 * as you can visit a node more than once, and there is no need to return to source node -
+	 * just a simple path going over all nodes in the list.
+	 * @param targets
+	 * @return the path of the way in list of node_data
+	 */
 	@Override
 	public List<node_data> TSP(List<Integer> targets) {
 		if (targets == null || targets.isEmpty()) return null;
@@ -482,6 +516,10 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 //
 //	}
 }// worse TSP run time ever
+	/**
+	 * Compute a deep copy of this graph.
+	 * @return
+	 */
 	@Override
 	public graph copy() {
 		return new DGraph(myGraph);//
