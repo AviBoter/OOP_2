@@ -1,5 +1,5 @@
-package dataStructure;
-
+import dataStructure.NodeData;
+import dataStructure.node_data;
 import org.junit.jupiter.api.Test;
 import utils.Point3D;
 

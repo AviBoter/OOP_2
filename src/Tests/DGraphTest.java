@@ -1,11 +1,13 @@
-package dataStructure;
-
+import dataStructure.edge_data;
+import dataStructure.node_data;
+import dataStructure.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import utils.Point3D;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
 

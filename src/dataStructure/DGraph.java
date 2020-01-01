@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.*;
 
 public class DGraph implements graph, Serializable {
-	private HashMap<Integer,node_data> NMap = new LinkedHashMap<>();
-	private HashMap<Integer,HashMap<Integer,edge_data>> EMap = new LinkedHashMap<>();
+	private HashMap<Integer, node_data> NMap = new LinkedHashMap<>();
+	private HashMap<Integer,HashMap<Integer, edge_data>> EMap = new LinkedHashMap<>();
 	private int EdgeZise = 0;
 	private int myMc=0;
 

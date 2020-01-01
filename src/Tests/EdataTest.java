@@ -1,10 +1,9 @@
-package dataStructure;
-
-import org.junit.jupiter.api.AfterEach;
+import dataStructure.Edata;
+import dataStructure.edge_data;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EdataTest {
     edge_data e1;
