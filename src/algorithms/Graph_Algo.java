@@ -8,7 +8,7 @@ import dataStructure.*;
 /**
  * This empty class represents the set of graph-theory algorithms
  * which should be implemented as part of Ex2 - Do edit this class.
- * @author 
+ * @author
  *
  */
 public class Graph_Algo implements graph_algorithms, Serializable {
@@ -130,7 +130,7 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 		return true;
 	}
 	@Override
-public double shortestPathDist(int src, int dest) {
+	public double shortestPathDist(int src, int dest) {
 		Ok = false;
 		resetTag();
 		if(myGraph.getNode(src)==null || myGraph.getNode(dest)==null)
@@ -470,7 +470,7 @@ public double shortestPathDist(int src, int dest) {
 		}
 		//System.out.println( );
 		//for(node_data n:ans){
-			//System.out.print(" "+(n.getKey()+1));
+		//System.out.print(" "+(n.getKey()+1));
 		//}
 		return ans;
 	}
@@ -538,7 +538,7 @@ public double shortestPathDist(int src, int dest) {
 //
 //
 //	}
-}// worse TSP run time ever
+	}// worse TSP run time ever
 	/**
 	 * Compute a deep copy of this graph.
 	 * @return
