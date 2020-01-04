@@ -325,14 +325,14 @@ public class Graph_GUI implements Serializable{
         twp.add(1);
         twp.add(4);
         twp.add(6);
-        g.addNode(new NodeData(new Point3D(-78,40)));
-        g.addNode(new NodeData(new Point3D(-78,40)));
-        g.addNode(new NodeData(new Point3D(-78,40)));
-        g.addNode(new NodeData(new Point3D(-78,40)));
-        g.addNode(new NodeData(new Point3D(-78,40)));
-        System.out.println(test.TSP(twp));
-        g.addNode(new NodeData(new Point3D(-78,40)));
-        g.addNode(new NodeData(new Point3D(-90,40)));
+//        g.addNode(new NodeData(new Point3D(-78,40)));
+//        g.addNode(new NodeData(new Point3D(-78,40)));
+//        g.addNode(new NodeData(new Point3D(-78,40)));
+//        g.addNode(new NodeData(new Point3D(-78,40)));
+//        g.addNode(new NodeData(new Point3D(-78,40)));
+//        System.out.println(test.TSP(twp));
+//        g.addNode(new NodeData(new Point3D(-78,40)));
+//        g.addNode(new NodeData(new Point3D(-90,40)));
 
 
 

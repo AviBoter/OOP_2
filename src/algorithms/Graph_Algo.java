@@ -131,8 +131,6 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 	}
 	@Override
 	public double shortestPathDist(int src, int dest) {
-		Ok = false;
-		resetTag();
 		if(myGraph.getNode(src)==null || myGraph.getNode(dest)==null)
 			return Integer.MIN_VALUE;
 
@@ -156,87 +154,21 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 				Runner=(NodeData)myGraph.getNode(CurNode.getDest());
 			i++;
 		}
-		Ok = true;
+		i=0;
+		while(i<myGraph.nodeSize()) {
+			myGraph.getNode(i).setTag(0);
+			i++;
+		}
+
 		return dist.get(dest).doubleValue();
 	}
 
-	private void GetNewDist(Queue<Edata> PQdist,HashMap<Integer,Double> dist) {
-		while(!PQdist.isEmpty()) {
-			Edata CurNode=PQdist.poll();
-			if(!dist.containsKey(CurNode.getDest()) || dist.get(CurNode.getDest()).doubleValue()>dist.get(CurNode.getSrc()).doubleValue()+CurNode.getWeight()) {
-				dist.put(CurNode.getDest(),dist.get(CurNode.getSrc())+CurNode.getWeight());
-			}
-		}
-	}
-	private void GetNewDist(Queue<Edata> PQdist,HashMap<Integer,Double> dist,HashMap<Integer,ArrayList<Integer>> Paths) {
-		while(!PQdist.isEmpty()) {
-			Edata CurNode=PQdist.poll();
-			if(!dist.containsKey(CurNode.getDest()) || dist.get(CurNode.getDest()).doubleValue()>dist.get(CurNode.getSrc()).doubleValue()+CurNode.getWeight()) {
-				Paths.put(CurNode.getDest(), new ArrayList<Integer>());
-				dist.put(CurNode.getDest(),dist.get(CurNode.getSrc())+CurNode.getWeight());
-				int k=0;
-				while(k<Paths.get(CurNode.getSrc()).size()) {
-					Paths.get(CurNode.getDest()).add(Paths.get(CurNode.getSrc()).get(k));
-					k++;
-				}
-				Paths.get(CurNode.getDest()).add(CurNode.getDest());
-			}
-		}
-	}
 
-	private void AddEdgesToPriorityQueue(Queue<Edata> Pqueue,Collection<edge_data> Col) {
-		PriorityQueue<edge_data> minHeap = new PriorityQueue<edge_data>(new Comparator<edge_data>() {
-			@Override
-			public int compare(edge_data o1, edge_data o2) {
-				return - Double.compare(o2.getWeight(),o1.getWeight());
-			}
-		});
-		Object[] temp=Col.toArray();
-		int i=0;
-		while(i<temp.length) {
-			minHeap.add((edge_data)temp[i]);
-			i++;
-		}
-		while(minHeap.iterator().hasNext()) {
-			Pqueue.add((Edata)minHeap.poll());
-		}
-	}
 
-	private void AddNodesToPriorityQueue(Queue<Edata> Pqueue,Collection<edge_data> Col) {
-		PriorityQueue<edge_data> minHeap = new PriorityQueue<edge_data>(new Comparator<edge_data>() {
-			@Override
-			public int compare(edge_data o1, edge_data o2) {
-				return - Double.compare(o2.getWeight(),o1.getWeight());
-			}
-		});
-		int i=0;
-		Object[] temp=Col.toArray();
-		while(i<temp.length) {
-			Edata cur=(Edata)temp[i];
-			if(myGraph.getNode(cur.getDest()).getTag()!=2) {
-				minHeap.add((edge_data)temp[i]);
-			}
-			i++;
-		}
-		i=0;
-		while(i<minHeap.size()) {
-			if(!Pqueue.contains((Edata)minHeap.peek()) && !minHeap.isEmpty())
-				Pqueue.add((Edata)minHeap.poll());
-			if(Pqueue.contains((Edata)minHeap.peek()))
-				minHeap.poll();
-		}
-		i=0;
-		while(i<Col.size()) {
-			Edata cur=(Edata)temp[i];
-			this.myGraph.getNode(cur.getDest()).setTag(2);
-			i++;
-		}
-		Col=null;
-	}
+
 
 	@Override
 	public List<node_data> shortestPath(int src, int dest) {
-		resetTag();
 		if(myGraph.getNode(src)==null || myGraph.getNode(dest)==null)
 			return null;
 		Queue<Edata> PQdist = new LinkedList<Edata>();
@@ -264,14 +196,16 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 		}
 		List<node_data> Ans=new LinkedList<node_data>();
 		int j=0;
-		if (Paths.get(dest) != null) {
-			while (j < Paths.get(dest).size()) {
-				Ans.add(myGraph.getNode(Paths.get(dest).get(j)));
-				//System.out.println(Paths.get(dest).get(j));
-				j++;
-			}
+		while(j<Paths.get(dest).size()) {
+			Ans.add(myGraph.getNode(Paths.get(dest).get(j)));
+			System.out.println(Paths.get(dest).get(j));
+			j++;
 		}
-		else return null;
+		j=0;
+		while(j<myGraph.nodeSize()) {
+			myGraph.getNode(j).setTag(0);
+			j++;
+		}
 		return Ans;
 	}
 
@@ -282,7 +216,7 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 	 * @return Distance of the src to dest in double
 	 */
 
-//	@Override
+	//@Override
 //	public double shortestPathDist(int src, int dest) {
 //		if (myGraph.getNode(src) == null || myGraph.getNode(dest) == null)
 //			throw new RuntimeException("src or dst dose not exist");
@@ -343,14 +277,14 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 //		}
 //		return -1;
 //	}
-///**
-// * returns the the shortest path between src to dest - as an ordered List of nodes:
-// * src--> n1-->n2-->...dest
-// * see: https://en.wikipedia.org/wiki/Shortest_path_problem
-// * @param src - start node
-// * @param dest - end (target) node
-// * @return the path of the way in list of node_data
-// */
+/**
+ * returns the the shortest path between src to dest - as an ordered List of nodes:
+ * src--> n1-->n2-->...dest
+ * see: https://en.wikipedia.org/wiki/Shortest_path_problem
+ * @param src - start node
+ * @param dest - end (target) node
+ * @return the path of the way in list of node_data
+ */
 //	@Override
 //	public List<node_data> shortestPath(int src, int dest) {
 //		if (myGraph.getNode(src) == null || myGraph.getNode(dest) == null)
@@ -553,6 +487,79 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 			myGraph.getNode(i).setTag(0);
 			i++;
 		}
+	}
+	private void GetNewDist(Queue<Edata> PQdist,HashMap<Integer,Double> dist) {
+		while(!PQdist.isEmpty()) {
+			Edata CurNode=PQdist.poll();
+			if(!dist.containsKey(CurNode.getDest()) || dist.get(CurNode.getDest()).doubleValue()>dist.get(CurNode.getSrc()).doubleValue()+CurNode.getWeight()) {
+				dist.put(CurNode.getDest(),dist.get(CurNode.getSrc())+CurNode.getWeight());
+			}
+		}
+	}
+	private void GetNewDist(Queue<Edata> PQdist,HashMap<Integer,Double> dist,HashMap<Integer,ArrayList<Integer>> Paths) {
+		while(!PQdist.isEmpty()) {
+			Edata CurNode=PQdist.poll();
+			if(!dist.containsKey(CurNode.getDest()) || dist.get(CurNode.getDest()).doubleValue()>dist.get(CurNode.getSrc()).doubleValue()+CurNode.getWeight()) {
+				Paths.put(CurNode.getDest(), new ArrayList<Integer>());
+				dist.put(CurNode.getDest(),dist.get(CurNode.getSrc())+CurNode.getWeight());
+				int k=0;
+				while(k<Paths.get(CurNode.getSrc()).size()) {
+					Paths.get(CurNode.getDest()).add(Paths.get(CurNode.getSrc()).get(k));
+					k++;
+				}
+				Paths.get(CurNode.getDest()).add(CurNode.getDest());
+			}
+		}
+	}
+
+	private void AddEdgesToPriorityQueue(Queue<Edata> Pqueue,Collection<edge_data> Col) {
+		PriorityQueue<edge_data> minHeap = new PriorityQueue<edge_data>(new Comparator<edge_data>() {
+			@Override
+			public int compare(edge_data o1, edge_data o2) {
+				return - Double.compare(o2.getWeight(),o1.getWeight());
+			}
+		});
+		Object[] temp=Col.toArray();
+		int i=0;
+		while(i<temp.length) {
+			minHeap.add((edge_data)temp[i]);
+			i++;
+		}
+		while(minHeap.iterator().hasNext()) {
+			Pqueue.add((Edata)minHeap.poll());
+		}
+	}
+
+	private void AddNodesToPriorityQueue(Queue<Edata> Pqueue,Collection<edge_data> Col) {
+		PriorityQueue<edge_data> minHeap = new PriorityQueue<edge_data>(new Comparator<edge_data>() {
+			@Override
+			public int compare(edge_data o1, edge_data o2) {
+				return - Double.compare(o2.getWeight(),o1.getWeight());
+			}
+		});
+		int i=0;
+		Object[] temp=Col.toArray();
+		while(i<temp.length) {
+			Edata cur=(Edata)temp[i];
+			if(myGraph.getNode(cur.getDest()).getTag()!=2) {
+				minHeap.add((edge_data)temp[i]);
+			}
+			i++;
+		}
+		i=0;
+		while(i<minHeap.size()) {
+			if(!Pqueue.contains((Edata)minHeap.peek()) && !minHeap.isEmpty())
+				Pqueue.add((Edata)minHeap.poll());
+			if(Pqueue.contains((Edata)minHeap.peek()))
+				minHeap.poll();
+		}
+		i=0;
+		while(i<Col.size()) {
+			Edata cur=(Edata)temp[i];
+			this.myGraph.getNode(cur.getDest()).setTag(2);
+			i++;
+		}
+		Col=null;
 	}
 
 }
