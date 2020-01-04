@@ -1701,7 +1701,7 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 	 * This method cannot be called directly.
 	 */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public synchronized void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("add E")) {
 				JFrame f;
 				f = new JFrame();
