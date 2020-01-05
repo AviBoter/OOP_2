@@ -31,9 +31,13 @@ public class NodeData implements node_data, Serializable {
      */
     public NodeData(node_data n){
         id = n.getKey();
-        if (IDnode<n.getKey())
+        if (IDnode<=n.getKey())
             IDnode = n.getKey()+1;
         nodeLoaction = new Point3D(n.getLocation().x(),n.getLocation().y());
+        maxX = Math.max(nodeLoaction.x(),maxX);
+        maxY = Math.max(nodeLoaction.y(),maxY);
+        minX = Math.min(nodeLoaction.x(),minX);
+        minY = Math.min(nodeLoaction.y(),minY);
         nodeWeight = n.getWeight();
         nodeInfo = n.getInfo();
         nodeTag = n.getTag();

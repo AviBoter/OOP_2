@@ -31,7 +31,7 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 	 */
 	@Override
 	public void init(graph g) {
-		myGraph = g;
+		myGraph =new DGraph(g);
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 	@Override
 	public boolean isConnected() {
 		resetTag();
-		if (myGraph.edgeSize() == 0) return true;
+		if (myGraph.nodeSize() == 0|| myGraph.nodeSize()==1) return true;
 		Collection<node_data> temp = myGraph.getV();
 		Iterator<node_data> nodeIter = temp.iterator();
 		while (nodeIter.hasNext()) {
@@ -130,6 +130,12 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 		}
 		return true;
 	}
+	/**
+	 * returns the length of the shortest path between src to dest
+	 * @param src - start node
+	 * @param dest - end (target) node
+	 * @return Distance of the src to dest in double
+	 */
 	@Override
 	public double shortestPathDist(int src, int dest) {
 		resetTag();
@@ -156,7 +162,6 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 				Runner=(NodeData)myGraph.getNode(CurNode.getDest());
 			i++;
 		}
-		resetTag();
 
 		return dist.get(dest).doubleValue();
 	}
@@ -164,7 +169,14 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 
 
 
-
+	/**
+	 * returns the the shortest path between src to dest - as an ordered List of nodes:
+	 * src--> n1-->n2-->...dest
+	 * see: https://en.wikipedia.org/wiki/Shortest_path_problem
+	 * @param src - start node
+	 * @param dest - end (target) node
+	 * @return the path of the way in list of node_data
+	 */
 	@Override
 	public List<node_data> shortestPath(int src, int dest) {
 		resetTag();
@@ -200,146 +212,8 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 			System.out.println(Paths.get(dest).get(j));
 			j++;
 		}
-		resetTag();
 		return Ans;
 	}
-
-	/**
-	 * returns the length of the shortest path between src to dest
-	 * @param src - start node
-	 * @param dest - end (target) node
-	 * @return Distance of the src to dest in double
-	 */
-
-	//@Override
-//	public double shortestPathDist(int src, int dest) {
-//		if (myGraph.getNode(src) == null || myGraph.getNode(dest) == null)
-//			throw new RuntimeException("src or dst dose not exist");
-//		if (src == dest) return 0;
-//		HashMap<Integer, Double> myBoard = new LinkedHashMap<>();
-//		Queue<Integer> myQueue = new LinkedList<>();
-//		int current;
-//		boolean desH = false;
-//		myQueue.add(src);
-//		myBoard.put(src, 0.0);
-//		while (!myQueue.isEmpty()) {
-//			current = myQueue.poll();
-//			if (current == dest) {
-//				desH = true;
-//			} else desH = false;
-//			if (myGraph.getE(current) != null) {
-//
-//				ArrayList<edge_data> myEData = new ArrayList<>(myGraph.getE(current));
-//				boolean flag = true;
-//				while (!desH && flag) {
-//					int minIndex = minInArray(myEData);
-//					if (minIndex != -1) {
-//						edge_data minE = myEData.remove(minIndex);
-//						if (updateBoard(myBoard, minE))
-//							myQueue.add(minE.getDest());
-//					} else flag = false;
-//				}
-//			}
-//		}
-//		return myBoard.get(dest);
-//	}
-//
-//	private boolean updateBoard(HashMap<Integer, Double> board, edge_data myedge) {
-//		int dest = myedge.getDest();
-//		int src = myedge.getSrc();
-//		double amount = myedge.getWeight() + board.get(src);
-//		if (!board.containsKey(dest)) {
-//			board.put(dest, amount);
-//		} else {
-//			if (board.get(dest) > amount) {
-//				board.put(dest, amount);
-//			} else {
-//				return false;
-//			}
-//		}
-//		return true;
-//	}
-//
-//	private int minInArray(List<edge_data> myList) {
-//		if (!myList.isEmpty()) {
-//			int minWE = 0;
-//			for (int i = 1; i < myList.size(); i++) {
-//				if (myList.get(minWE).getWeight() > myList.get(i).getWeight()) {
-//					minWE = i;
-//				}
-//			}
-//			return minWE;
-//		}
-//		return -1;
-//	}
-/**
- * returns the the shortest path between src to dest - as an ordered List of nodes:
- * src--> n1-->n2-->...dest
- * see: https://en.wikipedia.org/wiki/Shortest_path_problem
- * @param src - start node
- * @param dest - end (target) node
- * @return the path of the way in list of node_data
- */
-//	@Override
-//	public List<node_data> shortestPath(int src, int dest) {
-//		if (myGraph.getNode(src) == null || myGraph.getNode(dest) == null)
-//			throw new RuntimeException("src or dst dose not exist");
-//		if (src == dest) {
-//			List<node_data> t = new LinkedList<>();
-//			t.add(myGraph.getNode(src));
-//			return t;
-//		}
-//		HashMap<Integer, Double> myBoard = new LinkedHashMap<>();
-//		HashMap<Integer, LinkedList<node_data>> myBoardList = new LinkedHashMap<>();
-//		Queue<Integer> myQueue = new LinkedList<>();
-//		int current;
-//		boolean desH = false;
-//		myQueue.add(src);
-//		myBoard.put(src, 0.0);
-//		LinkedList<node_data> temp = new LinkedList<>();
-//		temp.add(myGraph.getNode(src));
-//		myBoardList.put(src, temp);
-//		while (!myQueue.isEmpty()) {
-//			current = myQueue.poll();
-//			if (current == dest) {
-//				desH = true;
-//			} else desH = false;
-//			if (myGraph.getE(current) != null) {
-//				ArrayList<edge_data> myEData = new ArrayList<>(myGraph.getE(current));
-//				boolean flag = true;
-//				while (!desH && flag) {
-//					int minIndex = minInArray(myEData);
-//					if (minIndex != -1) {
-//						edge_data minE = myEData.remove(minIndex);
-//						if (updateBoard(myBoard, minE, myBoardList))
-//							myQueue.add(minE.getDest());
-//					} else flag = false;
-//				}
-//			}
-//		}
-//		return myBoardList.get(dest);
-//	}
-//
-//	private boolean updateBoard(HashMap<Integer, Double> board, edge_data myedge, HashMap<Integer, LinkedList<node_data>> map) {
-//		int dest = myedge.getDest();
-//		int src = myedge.getSrc();
-//		LinkedList<node_data> list = map.get(src);
-//		double amount = myedge.getWeight() + board.get(src);
-//		if (!board.containsKey(dest)) {
-//			LinkedList<node_data> tempList = new LinkedList<>(list);
-//			tempList.add(myGraph.getNode(dest));
-//			board.put(dest, amount);
-//			map.put(dest, tempList);
-//		} else {
-//			if (board.get(dest) > amount) {
-//				LinkedList<node_data> tempList = new LinkedList<>(list);
-//				tempList.add(myGraph.getNode(dest));
-//				board.put(dest, amount);
-//				map.put(dest, tempList);
-//			} else return false;
-//		}
-//		return true;
-//	}
 	/**
 	 * computes a relatively short path which visit each node in the targets List.
 	 * Note: this is NOT the classical traveling salesman problem,
@@ -360,17 +234,12 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 			if(!hashMap.containsKey(targets.get(i))){
 				hashMap.put(targets.get(i),true);
 				i++;
-
 			}
 			else {
 				targets.remove(i);
 			}
 		}
 		i=0;
-//		while (i < targets.size() - 1) {
-//			ans.addAll(shortestPath(targets.get(i), targets.get(i + 1)));
-//			i++;
-//		}
 		int temp = 0;
 		int temp2;
 		List<node_data> tempN;
@@ -403,71 +272,7 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 		//}
 		return ans;
 	}
-	{
-//    @Override
-//	public List<node_data> TSP(List<Integer> targets){
-//		if (targets == null || targets.isEmpty()) return null;
-//		List<node_data> myNodeList = new LinkedList<>();
-//		for (Integer i:targets){
-//			myNodeList.add(myGraph.getNode(i));
-//		}
-//
-//		HashMap<Integer, List<node_data>> myBoardList = new LinkedHashMap<>();
-//		HashMap<Integer,HashMap<Integer,List<node_data>>> myBigBoard = new LinkedHashMap<>();
-//
-//		for (int i=0; i<targets.size();i++){
-//			HashMap<Integer,List<node_data>> waysTemp =new LinkedHashMap<>();
-//			for (int j=0; j<targets.size();j++){
-//				if (i!=j){
-//					List<node_data> nlist = shortestPath(targets.get(i),targets.get(j));
-//					if (nlist!=null&&nlist.containsAll(myNodeList)) return nlist;
-//
-//					waysTemp.put(targets.get(j),nlist);
-//					myBigBoard.put(targets.get(i),waysTemp);
-//				}
-//
-//			}
-//		}
-//		for (int i=0; i<targets.size();i++) {
-//			HashMap<Integer, List<node_data>> tempI = myBigBoard.get(targets.get(i));
-//			for (int j = 0; j < targets.size(); j++) {
-//				if (i != j) {
-//					List<node_data> tempIlist = tempI.get(targets.get(j));//list i to j short
-//					System.out.println();
-//						HashMap<Integer, List<node_data>> tempJ = myBigBoard.get(targets.get(j));
-//						if (6==targets.get(j) && targets.get(i)==0 ) {
-//							System.out.println(tempJ);
-//							System.out.println(tempIlist);
-//
-//						}
-//						for (int k = 0; k < targets.size(); k++) {
-//							List<node_data> tempJlist = tempJ.get(targets.get(k));//lis j to k
-//							List<node_data> iUj = new LinkedList<>();
-//							if (tempJlist != null&&tempIlist != null) {
-//								iUj.addAll(tempIlist);
-//								if (iUj.contains(tempJlist.get(0)))
-//									iUj.remove(tempJlist.get(0));
-//								iUj.addAll(tempJlist);
-//							}
-//
-//							if (iUj.containsAll(myNodeList)) return iUj;
-//						}
-//					}
-//
-//
-//				}
-//			}
-//		int _TEMP=targets.remove(targets.size()-1);
-//		List<node_data> finalTry = TSP(targets);
-//		List<node_data> result = shortestPath(_TEMP,finalTry.get(0).getKey());
-//		if (result==null) return null;
-//		result.addAll(finalTry);
-//		System.out.println(result.size());
-//		return result;
-//
-//
-//	}
-	}// worse TSP run time ever
+
 	/**
 	 * Compute a deep copy of this graph.
 	 * @return
