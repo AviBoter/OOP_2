@@ -12,7 +12,7 @@ import dataStructure.*;
  *
  */
 public class Graph_Algo implements graph_algorithms, Serializable {
-	public graph myGraph = new DGraph();
+	public graph myGraph;
 	public boolean Ok = true;
 
 	/**
@@ -76,6 +76,7 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 	 */
 	@Override
 	public boolean isConnected() {
+		resetTag();
 		if (myGraph.edgeSize() == 0) return true;
 		Collection<node_data> temp = myGraph.getV();
 		Iterator<node_data> nodeIter = temp.iterator();
@@ -131,6 +132,7 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 	}
 	@Override
 	public double shortestPathDist(int src, int dest) {
+		resetTag();
 		if(myGraph.getNode(src)==null || myGraph.getNode(dest)==null)
 			return Integer.MIN_VALUE;
 
@@ -154,11 +156,7 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 				Runner=(NodeData)myGraph.getNode(CurNode.getDest());
 			i++;
 		}
-		i=0;
-		while(i<myGraph.nodeSize()) {
-			myGraph.getNode(i).setTag(0);
-			i++;
-		}
+		resetTag();
 
 		return dist.get(dest).doubleValue();
 	}
@@ -169,6 +167,7 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 
 	@Override
 	public List<node_data> shortestPath(int src, int dest) {
+		resetTag();
 		if(myGraph.getNode(src)==null || myGraph.getNode(dest)==null)
 			return null;
 		Queue<Edata> PQdist = new LinkedList<Edata>();
@@ -201,11 +200,7 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 			System.out.println(Paths.get(dest).get(j));
 			j++;
 		}
-		j=0;
-		while(j<myGraph.nodeSize()) {
-			myGraph.getNode(j).setTag(0);
-			j++;
-		}
+		resetTag();
 		return Ans;
 	}
 
@@ -482,10 +477,8 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 		return new DGraph(myGraph);//
 	}
 	private void resetTag(){
-		int i=0;
-		while(i<myGraph.nodeSize()) {
-			myGraph.getNode(i).setTag(0);
-			i++;
+		for (node_data n:myGraph.getV()){
+			n.setTag(0);
 		}
 	}
 	private void GetNewDist(Queue<Edata> PQdist,HashMap<Integer,Double> dist) {

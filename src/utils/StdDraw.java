@@ -1793,6 +1793,7 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 						double temp = Ggui.shortestPathDist(src, dest);
 						JOptionPane.showMessageDialog(f, "Te shortest Path Dist is " + temp);
 					}catch (Exception e2){
+						//throw new RuntimeException(e2);
 						JOptionPane.showMessageDialog(f, e2);
 
 					}
@@ -1828,6 +1829,8 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 						}
 					}catch (Exception e2){
 						JOptionPane.showMessageDialog(f, e2);
+						//throw new RuntimeException(e2);
+
 					}
 				}catch (Exception e1){
 					JOptionPane.showMessageDialog(f,"Integers Only");

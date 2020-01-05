@@ -1,5 +1,7 @@
 package dataStructure;
 
+import gui.Graph_GUI;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -8,12 +10,14 @@ public class DGraph implements graph, Serializable {
 	private HashMap<Integer,HashMap<Integer, edge_data>> EMap = new LinkedHashMap<>();
 	private int EdgeZise = 0;
 	private int myMc=0;
+	Graph_GUI gui;
 
 	/**
 	 * default contractor
 	 */
 	public DGraph(){
-    }
+		gui = new Graph_GUI(this);
+	}
 	/**
 	 * copy contractor
 	 */
@@ -43,6 +47,7 @@ public class DGraph implements graph, Serializable {
 			}
 		}
 		EdgeZise = g.edgeSize();
+		gui = new Graph_GUI(this);
 
     }
 
