@@ -477,8 +477,10 @@ public class Graph_Algo implements graph_algorithms, Serializable {
 		return new DGraph(myGraph);//
 	}
 	private void resetTag(){
-		for (node_data n:myGraph.getV()){
-			n.setTag(0);
+		if (myGraph.getV()!= null) {
+			for (node_data n : myGraph.getV()) {
+				n.setTag(0);
+			}
 		}
 	}
 	private void GetNewDist(Queue<Edata> PQdist,HashMap<Integer,Double> dist) {
