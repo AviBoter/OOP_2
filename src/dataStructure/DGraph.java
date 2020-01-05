@@ -83,12 +83,12 @@ public class DGraph implements graph, Serializable {
 	 */
 	@Override
 	public void addNode(node_data n) {
-		if (!NMap.containsKey(n.getKey())) {
-			NMap.put(n.getKey(), n);
-			HashMap<Integer,edge_data> temp = new LinkedHashMap<>();
-			EMap.put(n.getKey(),temp);
-			myMc++;
-		}
+		if (NodeData.getIDnode()<n.getKey())
+			NodeData.setIDnode(n.getKey()+1);
+		NMap.put(n.getKey(), n);
+		HashMap<Integer,edge_data> temp = new LinkedHashMap<>();
+		EMap.put(n.getKey(),temp);
+		myMc++;
 	}
 
 	/**

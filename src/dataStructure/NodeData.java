@@ -150,4 +150,12 @@ public class NodeData implements node_data, Serializable {
     public static double getMinY() {
         return minY;
     }
+
+    public static int getIDnode() {
+        return IDnode;
+    }
+
+    public static void setIDnode(int IDnode) {
+        NodeData.IDnode = IDnode;
+    }
 }
